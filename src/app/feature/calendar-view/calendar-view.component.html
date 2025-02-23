@@ -1,0 +1,182 @@
+<div class="w-full pt-2 relative z-10">
+    <div class="w-full h-full px-10">
+      <div class="max-w-4xl xl:max-w-full bg-white rounded-xl p-6">
+        <div class="w-full px-20 py-2 h-auto">
+          <div
+            class="flex flex-col md:flex-row gap-4 items-center justify-between mb-5"
+          >
+            <div class="flex items-center gap-4 bg-white p-2 rounded-full">
+              <h5 class="text-xl leading-8 font-semibold text-indigo-600">
+                {{ monthTitle }}
+                {{ viewCalendarType === 2 ? "- " + weekTitle : "" }}
+              </h5>
+              <div class="flex items-center">
+                <button
+                  class="text-indigo-600 p-1 rounded transition-all duration-300 hover:text-black hover:bg-indigo-600 cursor-pointer"
+                  (click)="changeDate('decrease')"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                  >
+                    <path
+                      d="M10.0002 11.9999L6 7.99971L10.0025 3.99719"
+                      stroke="currentcolor"
+                      stroke-width="1.3"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    ></path>
+                  </svg>
+                </button>
+                <button
+                  class="text-indigo-600 p-1 rounded transition-all duration-300 hover:text-black hover:bg-indigo-600 cursor-pointer"
+                  (click)="changeDate('increase')"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                  >
+                    <path
+                      d="M6.00236 3.99707L10.0025 7.99723L6 11.9998"
+                      stroke="currentcolor"
+                      stroke-width="1.3"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    ></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div class="flex items-center rounded-md p-1 bg-indigo-50 gap-px">
+              <button
+                class="calendar-btn cursor-pointer border-outline-none py-2.5 px-5 rounded-md text-sm font-bold transition-all duration-300"
+                [ngClass]="{
+                  'bg-indigo-600 text-white': viewCalendarType === 2,
+                  'bg-indigo-50 text-indigo-600': viewCalendarType !== 2
+                }"
+                (click)="viewCalendarType = 2"
+              >
+                Tuần
+              </button>
+              <button
+                class="calendar-btn cursor-pointer border-outline-none py-2.5 px-5 rounded-md text-sm font-bold transition-all duration-300"
+                [ngClass]="{
+                  'bg-indigo-600 text-white': viewCalendarType === 3,
+                  'bg-indigo-50 text-indigo-600': viewCalendarType !== 3
+                }"
+                (click)="viewCalendarType = 3"
+              >
+                Tháng
+              </button>
+            </div>
+          </div>
+          <div
+            class="border-indigo rounded-tl-xl rounded-tr-xl min-h-20 h-auto overflow-x-auto slim-scrollbar"
+          >
+            <div class="min-w-[1200px]">
+              <div
+                class="grid grid-cols-7 rounded-t-3xl border-b-indigo"
+                *ngIf="viewCalendarType !== 1"
+              >
+                <div
+                  *ngFor="let day of weeks; let i = index"
+                  [ngClass]="{
+                    'py-3.5 border-r border-indigo bg-indigo-50 flex items-center justify-center text-sm font-semibold text-indigo-600': true,
+                    'rounded-tl-xl': i === 0,
+                    'rounded-tr-xl': i === 6
+                  }"
+                >
+                  {{ day }}
+                </div>
+              </div>
+  
+              <!-- View Week -->
+              <div
+                *ngIf="viewCalendarType === 2"
+                class="grid grid-cols-7 rounded-b-xl"
+              >
+                <ng-container *ngFor="let day of getWeekDays(currentDate)">
+                  <div
+                    class="flex h-auto min-w-[180px] min-h-[100px] p-3.5 bg-white border-r border-b border-indigo transition-all duration-300 hover:bg-indigo-50 cursor-pointer"
+                  >
+                    <span
+                      class="text-sm font-semibold text-gray-900 max-w-[15px] w-[15px]"
+                      >{{ day.date.getDate() }}</span
+                    >
+                    <div class="flex flex-col w-full">
+                      <ng-container
+                        *ngFor="let event of getEventsForDay(day.date)"
+                      >
+                        <div
+                          class="h-auto mt-4 px-1 border-r border-gray-200 transition-all hover:bg-stone-100 cursor-pointer"
+                        >
+                          <div class="rounded p-1.5 flex items-center">
+                            <p
+                              class="text-xs font-semibold text-green-600 margin-b-0 ml-[8px]"
+                            >
+                              {{ event.title }}
+                            </p>
+                          </div>
+                        </div>
+                      </ng-container>
+                    </div>
+                  </div>
+                </ng-container>
+              </div>
+  
+              <!-- View Month -->
+              <div
+                class="grid grid-cols-7 rounded-b-xl h-auto"
+                *ngIf="viewCalendarType === 3"
+              >
+                <div
+                  *ngFor="let day of days"
+                  [ngClass]="{
+                    'bg-gray-200': day.isOtherMonth,
+                    'bg-white': !day.isOtherMonth
+                  }"
+                  class="flex h-auto min-h-[100px] p-3.5 border-r border-b border-indigo transition-all duration-300 hover:bg-indigo-50 cursor-pointer"
+                >
+                  <span
+                    class="text-sm font-semibold text-gray-900 max-w-[15px] w-[15px]"
+                    >{{ day.date.getDate() }}</span
+                  >
+  
+                  <div class="flex flex-col w-full">
+                    <ng-container *ngFor="let event of getEventsForDay(day.date)">
+                      <div
+                        class="h-auto mt-4 px-1 border-r border-gray-200 transition-all cursor-pointer"
+                      >
+                        <div class="rounded p-1.5 flex items-center">
+                          @if (!event.isHoliday) {
+                          <p
+                            class="text-xs font-semibold text-green-600 margin-b-0 ml-[8px]"
+                          >
+                            {{ event.title }}
+                          </p>
+                          } @else {
+                          <p
+                            class="rounded w-full p-1.5 text-purple-600 text-[14px] font-semibold holiday bg-purple-50 margin-b-0"
+                          >
+                            {{ event.title }}
+                          </p>
+                          }
+                        </div>
+                      </div>
+                    </ng-container>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

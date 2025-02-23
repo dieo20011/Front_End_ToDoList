@@ -1,0 +1,81 @@
+.calendar-container {
+    width: 80%;
+    margin: auto;
+  }
+  
+  .view-selector {
+    text-align: center;
+    margin: 20px 0;
+  }
+  
+  .month-view,
+  .week-view,
+  .day-view {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .day-header {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+  }
+  
+  .day {
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    border: 1px solid #ddd;
+    margin: 2px;
+    position: relative;
+  }
+  
+  .event {
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+    font-size: 10px;
+    color: #ff0000;
+  }
+  
+  .border-none {
+    border: none !important;
+    outline: none !important;
+    background: none !important;
+  }
+  
+  .border-outline-none {
+    border: none !important;
+    outline: none !important;
+  }
+  
+  .border-indigo {
+    border: 1px solid #c3dafe !important;
+  }
+  
+  .border-b-indigo {
+    border-bottom: 1px solid #c3dafe !important;
+  }
+  .pending-leave {
+    border-left: 2px solid green !important;
+  }
+  .approve-leave {
+    border-left: 2px solid blue !important;
+  }
+  .reject-leave {
+    border-left: 2px solid red !important;
+  }
+  .holiday {
+    border-left: 4px solid #9400D3 !important;
+  }
+  .margin-b-0 {
+    margin-bottom: 0px !important;
+  }
+  .calendar-btn {
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease,
+      transform 0.3s ease,
+      box-shadow 0.3s ease;
+  }
+  
