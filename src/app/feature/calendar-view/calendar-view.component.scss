@@ -56,14 +56,14 @@
   .border-b-indigo {
     border-bottom: 1px solid #c3dafe !important;
   }
-  .pending-leave {
-    border-left: 2px solid green !important;
+  .pending {
+    border-left: 4px solid yellow !important;
   }
-  .approve-leave {
+  .progress {
     border-left: 2px solid blue !important;
   }
-  .reject-leave {
-    border-left: 2px solid red !important;
+  .done {
+    border-left: 2px solid green !important;
   }
   .holiday {
     border-left: 4px solid #9400D3 !important;

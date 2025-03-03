@@ -1,0 +1,72 @@
+<div>
+    @if (data.id) {
+      <h2>Chỉnh sửa task</h2>
+    } @else {
+      <h2 class="text-xl font-medium">Thêm mới task</h2>
+    }
+    <form nz-form [formGroup]="form">
+      <nz-form-item class="no-margin">
+        <nz-form-label nzSpan="6" nzRequired nzFor="name" class="font-medium">Tên task</nz-form-label>
+        <nz-form-control [nzErrorTip]="titleValueTpl">
+          <input nz-input formControlName="title" id="title" class="tw-w-full" placeholder="Tên task" />
+          <ng-template #titleValueTpl let-control>
+            <ng-container *ngIf="!form.get('title')?.value">{{ 'Trường này bắt buộc' }}</ng-container>
+            <ng-container *ngIf="form.get('title')?.hasError('whitespace')">{{ 'Vui lòng nhập tên task hợp lệ' }}</ng-container>
+            <ng-container *ngIf="form.get('title')?.hasError('maxlength')">{{ 'Không được quá 50 ký tự' }}</ng-container>
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item class="no-margin">
+        <nz-form-label nzRequired nzSpan="6" nzFor="fromDate" class="font-medium"> Ngày thực hiện </nz-form-label>
+        <nz-form-control [nzErrorTip]="fromDateValueTpl">
+          <nz-date-picker
+            [nzPlaceHolder]="'Ngày thực hiện'"
+            formControlName="fromDate"
+            nzFormat="dd/MM/yyyy"
+            class="w-full"></nz-date-picker>
+          <ng-template #fromDateValueTpl let-control>
+            <ng-container *ngIf="!form.get('fromDate')?.value">{{ 'Trường này bắt buộc' }}</ng-container>
+            <ng-container *ngIf="form.get('fromDate')?.hasError('dateRange')">{{ 'Từ ngày phải nhỏ hơn đến ngày' }}</ng-container>
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item class="no-margin">
+        <nz-form-label nzSpan="6" nzRequired nzFor="reviewUserId" class="tw-font-medium">Trạng thái</nz-form-label>
+        <nz-form-control [nzErrorTip]="reviewersValueTpl">
+          <nz-select
+            nzAllowClear
+            nzShowSearch
+            formControlName="status"
+            (nzOnSearch)="search($event)"
+            [nzFilterOption]="filterDropDownList">
+            <nz-option *ngFor="let todo of todoList" [nzLabel]="todo.label" [nzValue]="todo.value"></nz-option>
+          </nz-select>
+          <ng-template #reviewersValueTpl let-control>
+            <ng-container *ngIf="!form.get('reviewUserId')?.value">{{ 'Trường này bắt buộc' }}</ng-container>
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item class="no-margin">
+        <nz-form-label nzSpan="6" nzRequired nzFor="name" class="font-medium">Mô tả</nz-form-label>
+        <nz-form-control [nzErrorTip]="titleValueTpl">
+            <textarea nz-input formControlName="description" class="tw-w-full" [nzAutosize]="{ minRows: 2, maxRows: 6 }"></textarea>
+          <ng-template #titleValueTpl let-control>
+            <ng-container *ngIf="!form.get('description')?.value">{{ 'Trường này bắt buộc' }}</ng-container>
+            <ng-container *ngIf="form.get('description')?.hasError('whitespace')">{{ 'Vui lòng nhập mô tả hợp lệ' }}</ng-container>
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+      <div class="flex justify-end mt-4">
+        <button nz-button nzType="default" (click)="onDestroyModal()" class="margin-right">Hủy</button>
+        <button
+          nz-button
+          nzType="primary"
+          [disabled]="form.invalid"
+          (click)="create()"
+          >
+          Gửi
+        </button>
+      </div>
+    </form>
+  </div>
+  

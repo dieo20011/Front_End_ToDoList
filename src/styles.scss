@@ -10,6 +10,14 @@ body {
   );
 }
 
+p {
+  margin-bottom: 0px !important;
+}
+
+.no-margin {
+  margin: 15px !important;
+}
+
 .slim-scrollbar::-webkit-scrollbar {
   height: 7px;
   width: 7px;

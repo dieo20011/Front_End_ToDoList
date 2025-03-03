@@ -29,7 +29,6 @@ export const appConfig: ApplicationConfig = {
       withRouterConfig({ paramsInheritanceStrategy: 'always' })
     ),
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes),
     provideAnimations(),
     importProvidersFrom([
       TranslateModule.forRoot({
@@ -48,10 +47,7 @@ export const appConfig: ApplicationConfig = {
         },
       }),
     ]),
-    provideHttpClient(
-      withInterceptors([apiCallInterceptor]),
-      withInterceptorsFromDi()
-    ),
+    provideHttpClient(withInterceptors([apiCallInterceptor]), withInterceptorsFromDi()),
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     provideServiceWorker('ngsw-worker.js', {
       enabled: !isDevMode(),

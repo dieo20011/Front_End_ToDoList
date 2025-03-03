@@ -1,18 +1,26 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { IDayListData } from './calendar-view.interface';
+import {
+  CalendarRespone,
+  IDayListData,
+  ToDoStatus,
+} from './calendar-view.interface';
 import moment from 'moment';
 import { CalendarViewApiService } from './calendar-view.service';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
+import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { TodoAddTaskComponent } from './todo-add-task/todo-add-task.component';
 
 @Component({
   selector: 'app-calendar-view',
-  imports: [CommonModule],
+  imports: [CommonModule, NzButtonModule, NzModalModule],
   providers: [CalendarViewApiService],
   templateUrl: './calendar-view.component.html',
   styleUrl: './calendar-view.component.scss',
 })
 export class CalendarViewComponent implements OnInit {
-  dataSource: any[] = [];
+  dataSource: CalendarRespone[] = [];
   currentDate: Date = new Date();
   weeks: string[] = [
     'Thứ hai',
@@ -30,15 +38,20 @@ export class CalendarViewComponent implements OnInit {
   viewDataType: number = 0;
   isViewDataTypeCalendar = false;
   today = new Date();
-  constructor(private readonly _calendarSvc: CalendarViewApiService) {}
+  ToDoStatus = ToDoStatus;
+  constructor(
+    private readonly _calendarSvc: CalendarViewApiService,
+    private readonly _notification: NzNotificationService,
+    private readonly _nzModalSvc: NzModalService
+  ) {}
   ngOnInit(): void {
     this.generateCalendar(this.today);
     this._calendarSvc.getAllToDoListData().subscribe((resp) => {
-      if(resp.status) {
+      if (resp.status) {
         this.dataSource = resp.data;
-        console.log(this.dataSource)
+        console.log(this.dataSource);
       }
-    })
+    });
   }
 
   adjustWeekdayIndex(weekday: number): number {
@@ -152,6 +165,10 @@ export class CalendarViewComponent implements OnInit {
     this.generateCalendar(this.currentDate);
   }
 
+  editToDoTask(event: CalendarRespone) {
+    console.log(event);
+  }
+
   getEventsForDay(date: Date): any {
     const normalizedDate = new Date(date);
     normalizedDate.setHours(0, 0, 0, 0);
@@ -190,7 +207,6 @@ export class CalendarViewComponent implements OnInit {
     });
   }
 
-
   // Get Week by currentDate
   getWeekDays(date: Date) {
     const startOfWeek = moment(date).startOf('isoWeek').toDate();
@@ -226,5 +242,20 @@ export class CalendarViewComponent implements OnInit {
         this.generateCalendar(this.today);
       }
     }
+  }
+
+  openAddTask() {
+    const modalRef = this._nzModalSvc.create({
+      nzContent: TodoAddTaskComponent,
+      nzWidth: 700,
+      nzData: {},
+      nzMaskClosable: false,
+      nzFooter: null,
+    });
+    modalRef.afterClose.subscribe((reload: boolean) => {
+      if (!reload) return;
+      this._notification.success('Nộp đơn thành công', '');
+      this.generateCalendar(this.today);
+    });
   }
 }
