@@ -15,7 +15,7 @@ export class TodoTaskApiService {
     return this.httpClient.post<ApiResponse<never>>(this._base + '/api/todo/add', data);
   }
 
-  public updateTask(id: number, data: ToDoAddRequest) {
-    return this.httpClient.put(this._base + '/internal-api/workfromhomeapplication/' + id, data);
+  public updateTask(id: string, data: ToDoAddRequest) {
+    return this.httpClient.put<ApiResponse<never>>(this._base + '/api/todo/update/' + id, data);
   }
 }

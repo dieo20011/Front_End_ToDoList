@@ -1,0 +1,101 @@
+<div class="login-container">
+    <div class="login-form">
+      <h2 class="text-2xl font-bold text-center mb-4">🐼 🦆 Sign Up</h2>
+  
+      <form [formGroup]="signupForm" (ngSubmit)="signup()">
+        <!-- FullName input -->
+        <nz-form-item class="margin-0">
+          <nz-form-control [nzErrorTip]="fullnameValueTpl">
+            <nz-form-label nzSpan="6" [nzFor]="'fullname'" nzRequired
+              >Full Name</nz-form-label
+            >
+            <input
+              nz-input
+              formControlName="fullname"
+              id="fullname"
+              placeholder="Enter your Full Name"
+              [ngClass]="{ 'input-focus': emailFocused }"
+              (focus)="onFocusEmail()"
+              (blur)="onBlurEmail()"
+            />
+            <ng-template #fullnameValueTpl let-control>
+              <ng-container *ngIf="control?.hasError('required')">
+                <p>Full name is required</p>
+              </ng-container>
+              <ng-container *ngIf="control?.hasError('whitespace')">
+                <p>Please enter a valid name</p>
+              </ng-container>
+            </ng-template>
+          </nz-form-control>
+        </nz-form-item>
+  
+        <!-- Username input -->
+        <nz-form-item class="margin-0">
+            <nz-form-control [nzErrorTip]="usernameValueTpl">
+              <nz-form-label nzSpan="6" [nzFor]="'username'" nzRequired
+                >Username</nz-form-label
+              >
+              <input
+                nz-input
+                formControlName="username"
+                id="username"
+                placeholder="Enter your username"
+                [ngClass]="{ 'input-focus': usernameFocused }"
+                (focus)="onFocusUsername()"
+                (blur)="onBlurUsername()"
+                (input)="removeLeadingWhitespace($event)"
+              />
+              <ng-template #usernameValueTpl let-control>
+                <ng-container *ngIf="control?.hasError('required')">
+                  <p>Username is required</p>
+                </ng-container>
+                <ng-container *ngIf="control?.hasError('whitespace')">
+                  <p>Please enter a valid name</p>
+                </ng-container>
+              </ng-template>
+            </nz-form-control>
+          </nz-form-item>
+        
+        <!-- Password input -->
+        <nz-form-item class="margin-0">
+          <nz-form-control [nzErrorTip]="passwordValueTpl">
+            <nz-form-label nzSpan="6" [nzFor]="'password'" nzRequired
+              >Password</nz-form-label
+            >
+            <input
+              nz-input
+              formControlName="password"
+              id="password"
+              type="password"
+              placeholder="Enter your password"
+              [ngClass]="{ 'input-focus': passwordFocused }"
+              (focus)="onFocusPassword()"
+              (blur)="onBlurPassword()"
+            />
+            <ng-template #passwordValueTpl let-control>
+              <ng-container *ngIf="control?.hasError('required')">
+                <p>Password is required</p>
+              </ng-container>
+            </ng-template>
+          </nz-form-control>
+        </nz-form-item>
+        
+        <nz-form-item class="mt-2">
+            <nz-form-control>
+              <p [routerLink]="'/login'" class="text-blue-500 underline cursor-pointer">Already have an account ? Sign in here</p>
+            </nz-form-control>
+          </nz-form-item>
+  
+        <!-- Submit button -->
+        <button
+          nz-button
+          [nzType]="'primary'"
+          class="w-full pb-1"
+          [disabled]="signupForm.invalid"
+        >
+          Login
+        </button>
+      </form>
+    </div>
+  </div>
+  

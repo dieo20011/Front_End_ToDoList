@@ -1,6 +1,6 @@
 <div>
     @if (data.id) {
-      <h2>Chỉnh sửa task</h2>
+      <h2 class="text-xl font-medium">Chỉnh sửa task</h2>
     } @else {
       <h2 class="text-xl font-medium">Thêm mới task</h2>
     }
@@ -32,7 +32,7 @@
       </nz-form-item>
       <nz-form-item class="no-margin">
         <nz-form-label nzSpan="6" nzRequired nzFor="reviewUserId" class="tw-font-medium">Trạng thái</nz-form-label>
-        <nz-form-control [nzErrorTip]="reviewersValueTpl">
+        <nz-form-control [nzErrorTip]="statusValueTpl">
           <nz-select
             nzAllowClear
             nzShowSearch
@@ -41,23 +41,23 @@
             [nzFilterOption]="filterDropDownList">
             <nz-option *ngFor="let todo of todoList" [nzLabel]="todo.label" [nzValue]="todo.value"></nz-option>
           </nz-select>
-          <ng-template #reviewersValueTpl let-control>
-            <ng-container *ngIf="!form.get('reviewUserId')?.value">{{ 'Trường này bắt buộc' }}</ng-container>
+          <ng-template #statusValueTpl let-control>
+            <ng-container *ngIf="!form.get('status')?.value">{{ 'Trường này bắt buộc' }}</ng-container>
           </ng-template>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item class="no-margin">
         <nz-form-label nzSpan="6" nzRequired nzFor="name" class="font-medium">Mô tả</nz-form-label>
-        <nz-form-control [nzErrorTip]="titleValueTpl">
+        <nz-form-control [nzErrorTip]="descriptionValueTpl">
             <textarea nz-input formControlName="description" class="tw-w-full" [nzAutosize]="{ minRows: 2, maxRows: 6 }"></textarea>
-          <ng-template #titleValueTpl let-control>
+          <ng-template #descriptionValueTpl let-control>
             <ng-container *ngIf="!form.get('description')?.value">{{ 'Trường này bắt buộc' }}</ng-container>
             <ng-container *ngIf="form.get('description')?.hasError('whitespace')">{{ 'Vui lòng nhập mô tả hợp lệ' }}</ng-container>
           </ng-template>
         </nz-form-control>
       </nz-form-item>
-      <div class="flex justify-end mt-4">
-        <button nz-button nzType="default" (click)="onDestroyModal()" class="margin-right">Hủy</button>
+      <div class="flex justify-end mt-4 gap-2">
+        <button nz-button nzType="default" (click)="onDestroyModal()">Hủy</button>
         <button
           nz-button
           nzType="primary"

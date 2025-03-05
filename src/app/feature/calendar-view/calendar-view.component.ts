@@ -11,6 +11,9 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { TodoAddTaskComponent } from './todo-add-task/todo-add-task.component';
+import { PopUpConfirmComponent } from '../../../shared/ui/pop-up-confirm/pop-up-confirm.component';
+import { TokenDecodeService } from '../../../core/service/token.service';
+import { AuthApiService } from '../../../core/service/auth.service';
 
 @Component({
   selector: 'app-calendar-view',
@@ -21,6 +24,7 @@ import { TodoAddTaskComponent } from './todo-add-task/todo-add-task.component';
 })
 export class CalendarViewComponent implements OnInit {
   dataSource: CalendarRespone[] = [];
+  tokenDetails: any;
   currentDate: Date = new Date();
   weeks: string[] = [
     'Thứ hai',
@@ -46,10 +50,13 @@ export class CalendarViewComponent implements OnInit {
   ) {}
   ngOnInit(): void {
     this.generateCalendar(this.today);
+    this.getAllToDoListData();
+  }
+
+  getAllToDoListData() {
     this._calendarSvc.getAllToDoListData().subscribe((resp) => {
       if (resp.status) {
         this.dataSource = resp.data;
-        console.log(this.dataSource);
       }
     });
   }
@@ -254,8 +261,42 @@ export class CalendarViewComponent implements OnInit {
     });
     modalRef.afterClose.subscribe((reload: boolean) => {
       if (!reload) return;
-      this._notification.success('Nộp đơn thành công', '');
-      this.generateCalendar(this.today);
+      this._notification.success('Tạo task thành công', '');
+      this.getAllToDoListData();
+    });
+  }
+
+  openEditTask(data: CalendarRespone) {
+    const modalRef = this._nzModalSvc.create({
+      nzContent: TodoAddTaskComponent,
+      nzWidth: 700,
+      nzData: data,
+      nzMaskClosable: false,
+      nzFooter: null,
+    });
+    modalRef.afterClose.subscribe((reload: boolean) => {
+      if (!reload) return;
+      this._notification.success('Sửa task thành công', '');
+      this.getAllToDoListData();
+    });
+  }
+
+  deleteTask(id: number, event: Event) {
+    event.stopPropagation();
+    const modalRef = this._nzModalSvc.create({
+      nzContent: PopUpConfirmComponent,
+      nzWidth: 320,
+      nzData: { title: `Bạn có chắc chắn muốn xóa?` },
+      nzFooter: null,
+    });
+    modalRef.componentInstance!.clickSubmit.subscribe(() => {
+      this._calendarSvc.deleteTask(id).subscribe((resp: any) => {
+        if (resp.status) {
+          modalRef.destroy();
+          this._notification.success('Xóa task thành công', '');
+          this.getAllToDoListData();
+        }
+      });
     });
   }
 }

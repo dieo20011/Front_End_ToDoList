@@ -1,6 +1,13 @@
 import { CommonModule, DatePipe } from '@angular/common';
 import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
-import { ReactiveFormsModule, FormsModule, FormControl, UntypedFormBuilder, Validators, UntypedFormGroup } from '@angular/forms';
+import {
+  ReactiveFormsModule,
+  FormsModule,
+  FormControl,
+  UntypedFormBuilder,
+  Validators,
+  UntypedFormGroup,
+} from '@angular/forms';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -8,9 +15,12 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
-import { CalendarRespone, ToDoList, ToDoStatus } from '../calendar-view.interface';
+import {
+  CalendarRespone,
+  ToDoList,
+  ToDoStatus,
+} from '../calendar-view.interface';
 import { NZ_MODAL_DATA, NzModalRef } from 'ng-zorro-antd/modal';
-import { DateValidatorWithoutTime } from '../../../../shared/util/date.validator';
 import { whitespaceValidator } from '../../../../shared/util/white-space.validator';
 import { removeAccentedChars } from '../../../../shared/util/string-helpers';
 import { TodoTaskApiService } from './todo-add-task.service';
@@ -21,7 +31,7 @@ import { TodoTaskApiService } from './todo-add-task.service';
     ReactiveFormsModule,
     FormsModule,
     CommonModule,
-    // MatModule
+    // NgModule
     NzIconModule,
     NzFormModule,
     NzInputModule,
@@ -39,31 +49,35 @@ export class TodoAddTaskComponent implements OnInit {
   todoListCopy = ToDoList;
   constructor(
     private readonly _fb: UntypedFormBuilder,
-    private readonly _cdr: ChangeDetectorRef,
     private readonly _nzModalRef: NzModalRef,
     private readonly datePipe: DatePipe,
     private readonly _todoApiSvc: TodoTaskApiService,
-    private readonly _notification: NzNotificationService,
     @Inject(NZ_MODAL_DATA)
     public data: CalendarRespone
   ) {
-    this.form = this._fb.group(
-      {
-        title: new FormControl('', [whitespaceValidator, Validators.required, Validators.maxLength(50)]),
-        fromDate: new FormControl('', [Validators.required]),
-        toDate: new FormControl(''),
-        status: new FormControl(ToDoStatus.Pending, [Validators.required]),
-        description: new FormControl('', [whitespaceValidator]),
-      }
-    );
+    this.form = this._fb.group({
+      title: new FormControl('', [
+        whitespaceValidator,
+        Validators.required,
+        Validators.maxLength(50),
+      ]),
+      fromDate: new FormControl('', [Validators.required]),
+      toDate: new FormControl(''),
+      status: new FormControl(ToDoStatus.Pending, [Validators.required]),
+      description: new FormControl('', [whitespaceValidator]),
+    });
   }
 
   ngOnInit(): void {
-      
+    if (this.data?.id) {
+      this.form.patchValue(this.data);
+    }
   }
 
   formatDate(date: string): string {
-    return this.datePipe.transform(date, "yyyy-MM-dd'T'00:00:00'Z'", 'UTC') ?? '';
+    return (
+      this.datePipe.transform(date, "yyyy-MM-dd'T'00:00:00'Z'", 'UTC') ?? ''
+    );
   }
 
   create() {
@@ -72,21 +86,29 @@ export class TodoAddTaskComponent implements OnInit {
       fromDate: this.formatDate(this.form.get('fromDate')?.value),
       toDate: this.formatDate(this.form.get('fromDate')?.value),
     };
-    if(!this.data?.id) {
+    if (!this.data?.id) {
       this._todoApiSvc.newTask(data).subscribe((resp) => {
-        if(resp.status) {
-          this._notification.success('Thêm task thành công', '');
+        if (resp.status) {
           const reload = true;
           this._nzModalRef.close(reload);
         }
-      })
+      });
+    } else {
+      this._todoApiSvc.updateTask(this.data?.id, data).subscribe((resp) => {
+        if (resp.status) {
+          const reload = true;
+          this._nzModalRef.close(reload);
+        }
+      });
     }
   }
 
   search(event: any) {
     if (event) {
-      this.todoList = this.todoListCopy.filter(rv =>
-        removeAccentedChars(rv.label).toLowerCase().includes(removeAccentedChars(event).toLowerCase())
+      this.todoList = this.todoListCopy.filter((rv) =>
+        removeAccentedChars(rv.label)
+          .toLowerCase()
+          .includes(removeAccentedChars(event).toLowerCase())
       );
     } else {
       this.todoList = this.todoListCopy;

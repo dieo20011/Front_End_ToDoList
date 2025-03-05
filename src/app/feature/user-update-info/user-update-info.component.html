@@ -1,0 +1,60 @@
+<div>
+  <h2 class="text-xl font-medium">Chỉnh sửa thông tin cá nhân</h2>
+  <form nz-form [formGroup]="form">
+    <nz-form-item class="no-margin">
+      <nz-form-label nzSpan="6" nzRequired nzFor="name" class="font-medium"
+        >Username</nz-form-label
+      >
+      <nz-form-control [nzErrorTip]="titleValueTpl">
+        <input
+          nz-input
+          formControlName="username"
+          id="title"
+          class="tw-w-full"
+          placeholder="Username"
+        />
+        <ng-template #titleValueTpl let-control>
+          <ng-container *ngIf="!form.get('username')?.value">{{
+            "Trường này bắt buộc"
+          }}</ng-container>
+          <ng-container *ngIf="form.get('username')?.hasError('whitespace')">{{
+            "Vui lòng nhập tên task hợp lệ"
+          }}</ng-container>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item class="no-margin">
+      <nz-form-label nzSpan="6" nzRequired nzFor="name" class="font-medium"
+        >Name</nz-form-label
+      >
+      <nz-form-control [nzErrorTip]="titleValueTpl">
+        <input
+          nz-input
+          formControlName="fullname"
+          id="title"
+          class="tw-w-full"
+          placeholder="Fullname"
+        />
+        <ng-template #titleValueTpl let-control>
+          <ng-container *ngIf="!form.get('fullname')?.value">{{
+            "Trường này bắt buộc"
+          }}</ng-container>
+          <ng-container *ngIf="form.get('fullname')?.hasError('whitespace')">{{
+            "Vui lòng nhập tên task hợp lệ"
+          }}</ng-container>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+    <div class="flex justify-end mt-4 gap-2">
+      <button nz-button nzType="default" (click)="onDestroyModal()">Hủy</button>
+      <button
+        nz-button
+        nzType="primary"
+        [disabled]="form.invalid"
+        (click)="update()"
+      >
+        Gửi
+      </button>
+    </div>
+  </form>
+</div>
