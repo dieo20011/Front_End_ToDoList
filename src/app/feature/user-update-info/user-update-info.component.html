@@ -5,7 +5,7 @@
       <nz-form-label nzSpan="6" nzRequired nzFor="name" class="font-medium"
         >Username</nz-form-label
       >
-      <nz-form-control [nzErrorTip]="titleValueTpl">
+      <nz-form-control [nzErrorTip]="usernameValueTpl">
         <input
           nz-input
           formControlName="username"
@@ -13,21 +13,21 @@
           class="tw-w-full"
           placeholder="Username"
         />
-        <ng-template #titleValueTpl let-control>
+        <ng-template #usernameValueTpl let-control>
           <ng-container *ngIf="!form.get('username')?.value">{{
             "Trường này bắt buộc"
           }}</ng-container>
           <ng-container *ngIf="form.get('username')?.hasError('whitespace')">{{
-            "Vui lòng nhập tên task hợp lệ"
+            "Vui lòng nhập tên hợp lệ"
           }}</ng-container>
         </ng-template>
       </nz-form-control>
     </nz-form-item>
     <nz-form-item class="no-margin">
-      <nz-form-label nzSpan="6" nzRequired nzFor="name" class="font-medium"
-        >Name</nz-form-label
+      <nz-form-label nzSpan="6" nzRequired nzFor="fullname" class="font-medium"
+        >FullName</nz-form-label
       >
-      <nz-form-control [nzErrorTip]="titleValueTpl">
+      <nz-form-control [nzErrorTip]="fullNameValueTpl">
         <input
           nz-input
           formControlName="fullname"
@@ -35,12 +35,12 @@
           class="tw-w-full"
           placeholder="Fullname"
         />
-        <ng-template #titleValueTpl let-control>
+        <ng-template #fullNameValueTpl let-control>
           <ng-container *ngIf="!form.get('fullname')?.value">{{
             "Trường này bắt buộc"
           }}</ng-container>
           <ng-container *ngIf="form.get('fullname')?.hasError('whitespace')">{{
-            "Vui lòng nhập tên task hợp lệ"
+            "Vui lòng nhập tên hợp lệ"
           }}</ng-container>
         </ng-template>
       </nz-form-control>
@@ -49,8 +49,9 @@
       <button nz-button nzType="default" (click)="onDestroyModal()">Hủy</button>
       <button
         nz-button
+        type="button"
         nzType="primary"
-        [disabled]="form.invalid"
+        [disabled]="form.invalid || form.pristine"
         (click)="update()"
       >
         Gửi

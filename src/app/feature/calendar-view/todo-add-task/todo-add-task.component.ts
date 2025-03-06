@@ -53,7 +53,7 @@ export class TodoAddTaskComponent implements OnInit {
     private readonly datePipe: DatePipe,
     private readonly _todoApiSvc: TodoTaskApiService,
     @Inject(NZ_MODAL_DATA)
-    public data: CalendarRespone
+    public data: { data: CalendarRespone, userId: number }
   ) {
     this.form = this._fb.group({
       title: new FormControl('', [
@@ -69,8 +69,8 @@ export class TodoAddTaskComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.data?.id) {
-      this.form.patchValue(this.data);
+    if (this.data?.data) {
+      this.form.patchValue(this.data.data);
     }
   }
 
@@ -85,8 +85,9 @@ export class TodoAddTaskComponent implements OnInit {
       ...this.form.value,
       fromDate: this.formatDate(this.form.get('fromDate')?.value),
       toDate: this.formatDate(this.form.get('fromDate')?.value),
+      userId: this.data.userId ?? '',
     };
-    if (!this.data?.id) {
+    if (!this.data?.data) {
       this._todoApiSvc.newTask(data).subscribe((resp) => {
         if (resp.status) {
           const reload = true;
@@ -94,7 +95,7 @@ export class TodoAddTaskComponent implements OnInit {
         }
       });
     } else {
-      this._todoApiSvc.updateTask(this.data?.id, data).subscribe((resp) => {
+      this._todoApiSvc.updateTask(this.data?.data.id, data).subscribe((resp) => {
         if (resp.status) {
           const reload = true;
           this._nzModalRef.close(reload);

@@ -8,8 +8,8 @@ export class CalendarViewApiService {
   private readonly _base = environment.API_DOMAIN;
   constructor(private readonly _http: HttpClient) {}
 
-  public getAllToDoListData() {
-    return this._http.get<ApiResponse<never>>(this._base + '/api/todo/get');
+  public getAllToDoListData(id: number) {
+    return this._http.get<ApiResponse<never>>(this._base + '/api/todo/get/' + id);
   }
 
   public deleteTask(id: number) {

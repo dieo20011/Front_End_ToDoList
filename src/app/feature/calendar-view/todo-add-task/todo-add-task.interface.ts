@@ -4,4 +4,5 @@ export interface ToDoAddRequest {
     status: number;
     fromDate: string;
     toDate: string;
+    userId: string;
 }

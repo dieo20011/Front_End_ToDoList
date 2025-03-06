@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { AuthApiService } from '../../../core/service/auth.service';
 import { TokenDecodeService } from '../../../core/service/token.service';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -12,7 +12,8 @@ import { Router } from '@angular/router';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
 import { UserUpdateInfoComponent } from '../user-update-info/user-update-info.component';
-
+import { UserUpdatePasswordComponent } from '../user-update-password/user-update-password.component';
+import { NzTabsModule } from 'ng-zorro-antd/tabs';
 @Component({
   selector: 'app-header',
   imports: [
@@ -22,12 +23,14 @@ import { UserUpdateInfoComponent } from '../user-update-info/user-update-info.co
     NzDropDownDirective,
     NzDropdownMenuComponent,
     NzModalModule,
+    NzTabsModule
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
 export class HeaderComponent implements OnInit {
   tokenDetails: any;
+  userName = signal('');
   constructor(
     private readonly _tokenSvc: TokenDecodeService,
     private readonly _notification: NzNotificationService,
@@ -36,9 +39,20 @@ export class HeaderComponent implements OnInit {
     private readonly _authSvc: AuthApiService
   ) {}
   ngOnInit(): void {
+    this.getMe();
+  }
+
+  getMe() {
     this.tokenDetails = this._tokenSvc.getTokenDetails(
       this._authSvc.getToken()
     );
+    if(this.tokenDetails?.userId) {
+      this._authSvc.getMe(this.tokenDetails?.userId).subscribe((resp) => {
+        if(resp.status) {
+          this.userName.set(resp.data.fullname)
+        }
+      })
+    }
   }
 
   openPopUpEditInformation() {
@@ -52,9 +66,22 @@ export class HeaderComponent implements OnInit {
     modalRef.afterClose.subscribe((reload: boolean) => {
       if (!reload) return;
       this._notification.success('Cập nhật thông tin thành công', '');
-      this.tokenDetails = this._tokenSvc.getTokenDetails(
-        this._authSvc.getToken()
-      );
+      this.getMe();
+    });
+  }
+
+  openPopUpChangePassword() {
+    const modalRef = this._nzModalSvc.create({
+      nzContent: UserUpdatePasswordComponent,
+      nzWidth: 700,
+      nzData: this.tokenDetails ? this.tokenDetails?.userId: '',
+      nzMaskClosable: false,
+      nzFooter: null,
+    });
+    modalRef.afterClose.subscribe((reload: boolean) => {
+      if (!reload) return;
+      this._notification.success('Cập nhật mật khẩu thành công', '');
+      this.getMe();
     });
   }
 

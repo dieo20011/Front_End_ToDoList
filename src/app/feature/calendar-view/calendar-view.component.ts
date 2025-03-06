@@ -46,6 +46,8 @@ export class CalendarViewComponent implements OnInit {
   constructor(
     private readonly _calendarSvc: CalendarViewApiService,
     private readonly _notification: NzNotificationService,
+    private readonly _authSvc: AuthApiService,
+    private readonly _tokenSvc: TokenDecodeService,
     private readonly _nzModalSvc: NzModalService
   ) {}
   ngOnInit(): void {
@@ -54,11 +56,18 @@ export class CalendarViewComponent implements OnInit {
   }
 
   getAllToDoListData() {
-    this._calendarSvc.getAllToDoListData().subscribe((resp) => {
-      if (resp.status) {
-        this.dataSource = resp.data;
-      }
-    });
+    this.tokenDetails = this._tokenSvc.getTokenDetails(
+      this._authSvc.getToken()
+    );
+    if (this.tokenDetails?.userId) {
+      this._calendarSvc
+        .getAllToDoListData(this.tokenDetails?.userId)
+        .subscribe((resp) => {
+          if (resp.status) {
+            this.dataSource = resp.data;
+          }
+        });
+    }
   }
 
   adjustWeekdayIndex(weekday: number): number {
@@ -255,7 +264,7 @@ export class CalendarViewComponent implements OnInit {
     const modalRef = this._nzModalSvc.create({
       nzContent: TodoAddTaskComponent,
       nzWidth: 700,
-      nzData: {},
+      nzData: { userId: this.tokenDetails?.userId },
       nzMaskClosable: false,
       nzFooter: null,
     });
@@ -270,7 +279,7 @@ export class CalendarViewComponent implements OnInit {
     const modalRef = this._nzModalSvc.create({
       nzContent: TodoAddTaskComponent,
       nzWidth: 700,
-      nzData: data,
+      nzData: { data: data, userId: this.tokenDetails?.userId },
       nzMaskClosable: false,
       nzFooter: null,
     });

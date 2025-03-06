@@ -53,12 +53,18 @@ export class UserUpdateInfoComponent implements OnInit {
       }
     });
   }
-  submit() {
-   
-  }
 
   update() {
-
+    const data = {
+      fullname: this.form.get('fullname')?.value.trim(),
+      username: this.form.get('username')?.value.trim()
+    };
+    this._authSvc.updateUserInfo(this.id, data).subscribe((resp) => {
+      if(resp.status) {
+        const reload = true;
+        this._nzModalRef.close(reload);
+      }
+    })
   }
   
   onDestroyModal() {

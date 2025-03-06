@@ -172,7 +172,7 @@
                             'pending text-yellow-600 bg-yellow-100 ': event.status === ToDoStatus.Pending,
                             'progress text-blue-600 bg-blue-200 ': event.status === ToDoStatus.InProgress,
                             'done text-green-600 bg-green-200 ': event.status === ToDoStatus.Done}"
-                            class="rounded w-full p-1.5 text-[14px] font-semibold margin-b-0 ml-[8px] flex relative cursor-pointer" (click)="event?.id ? openEditTask(event): ''">
+                            class="rounded w-full p-1.5 pr-2 text-[14px] font-semibold margin-b-0 ml-[8px] flex relative cursor-pointer" (click)="event?.id ? openEditTask(event): ''">
                             <p
                             >
                               {{ event.title }}

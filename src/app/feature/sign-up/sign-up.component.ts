@@ -14,6 +14,7 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { whitespaceValidator } from '../../../shared/util/white-space.validator';
 import { AuthApiService } from '../../../core/service/auth.service';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
   selector: 'app-sign-up',
@@ -26,6 +27,7 @@ import { AuthApiService } from '../../../core/service/auth.service';
     FormsModule,
     NzFormModule,
     RouterLink,
+    NzIconModule,
   ],
   templateUrl: './sign-up.component.html',
   styleUrl: './sign-up.component.scss',
@@ -35,6 +37,7 @@ export class SignUpComponent {
   usernameFocused = false;
   emailFocused = false;
   passwordFocused = false;
+  isNewPasswordVisible = true;
 
   constructor(
     private readonly fb: FormBuilder,

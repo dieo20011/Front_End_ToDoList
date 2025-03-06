@@ -15,6 +15,7 @@ import { Router, RouterLink } from '@angular/router';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { AuthApiService } from '../../../core/service/auth.service';
 import { whitespaceValidator } from '../../../shared/util/white-space.validator';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
   selector: 'app-login',
@@ -27,12 +28,14 @@ import { whitespaceValidator } from '../../../shared/util/white-space.validator'
     FormsModule,
     NzFormModule,
     RouterLink,
+    NzIconModule,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
 export class LoginComponent {
   loginForm!: FormGroup;
+  isNewPasswordVisible = true;
   emailFocused = false;
   passwordFocused = false;
 
