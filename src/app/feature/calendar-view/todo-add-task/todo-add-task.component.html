@@ -49,7 +49,7 @@
       <nz-form-item class="no-margin">
         <nz-form-label nzSpan="6" nzRequired nzFor="name" class="font-medium">Mô tả</nz-form-label>
         <nz-form-control [nzErrorTip]="descriptionValueTpl">
-            <textarea nz-input formControlName="description" class="tw-w-full" [nzAutosize]="{ minRows: 2, maxRows: 6 }"></textarea>
+            <textarea nz-input formControlName="description" placeholder="Mô tả" class="tw-w-full" [nzAutosize]="{ minRows: 2, maxRows: 6 }"></textarea>
           <ng-template #descriptionValueTpl let-control>
             <ng-container *ngIf="!form.get('description')?.value">{{ 'Trường này bắt buộc' }}</ng-container>
             <ng-container *ngIf="form.get('description')?.hasError('whitespace')">{{ 'Vui lòng nhập mô tả hợp lệ' }}</ng-container>
@@ -57,8 +57,9 @@
         </nz-form-control>
       </nz-form-item>
       <div class="flex justify-end mt-4 gap-2">
-        <button nz-button nzType="default" (click)="onDestroyModal()">Hủy</button>
+        <button type="button" nzType="default" (click)="onDestroyModal()">Hủy</button>
         <button
+          type="button"
           nz-button
           nzType="primary"
           [disabled]="form.invalid"

@@ -64,7 +64,7 @@ export class TodoAddTaskComponent implements OnInit {
       fromDate: new FormControl('', [Validators.required]),
       toDate: new FormControl(''),
       status: new FormControl(ToDoStatus.Pending, [Validators.required]),
-      description: new FormControl('', [whitespaceValidator]),
+      description: new FormControl('', [Validators.required, whitespaceValidator]),
     });
   }
 

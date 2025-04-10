@@ -7,10 +7,10 @@ export interface CalendarRespone {
   id: string;
   title: string;
   description: string;
-  status: number;
   fromDate: string;
   toDate: string;
   isHoliday?: boolean;
+  status: ToDoStatus;
 }
 
 export enum ToDoStatus {

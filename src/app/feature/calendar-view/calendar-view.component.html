@@ -1,82 +1,101 @@
 <div class="w-full pt-2 relative z-10">
-    <div class="w-full h-full px-10">
-      <div class="max-w-4xl xl:max-w-full bg-white rounded-xl p-6">
-        <div class="w-full px-20 py-2 h-auto">
+  <div class="w-full h-full px-5">
+    <div class="max-w-4xl xl:max-w-full bg-white rounded-xl p-6 h-full pb-4">
+      <div class="px-10 flex justify-end py-2">
+        <nz-select
+          [nzMaxTagCount]="3"
+          class="w-[210px]"
+          [(ngModel)]="viewDataType"
+          [nzPlaceHolder]="'Xem thông tin dạng'"
+          (ngModelChange)="changeViewDataType($event)"
+        >
+          <nz-option
+            *ngFor="let leave of viewLeaveTypeList"
+            [nzLabel]="leave.label"
+            [nzValue]="leave.value"
+          ></nz-option>
+        </nz-select>
+      </div>
+      <div class="w-full px-10 py-2 h-auto">
+        <ng-container *ngIf="viewDataType === 1">
           <div
-            class="flex flex-col md:flex-row gap-4 items-center justify-between mb-5"
-          >
-            <div class="flex items-center gap-4 bg-white p-2 rounded-full">
-              <h5 class="text-xl leading-8 font-bold text-indigo-600 margin-b-0">
-                {{ monthTitle }}
-                {{ viewCalendarType === 2 ? "- " + weekTitle : "" }}
-              </h5>
-              <div class="flex items-center">
-                <button
-                  class="text-indigo-600 p-1 rounded transition-all duration-300 hover:text-black hover:bg-indigo-600 cursor-pointer"
-                  (click)="changeDate('decrease')"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 16 16"
-                    fill="none"
-                  >
-                    <path
-                      d="M10.0002 11.9999L6 7.99971L10.0025 3.99719"
-                      stroke="currentcolor"
-                      stroke-width="1.3"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    ></path>
-                  </svg>
-                </button>
-                <button
-                  class="text-indigo-600 p-1 rounded transition-all duration-300 hover:text-black hover:bg-indigo-600 cursor-pointer"
-                  (click)="changeDate('increase')"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 16 16"
-                    fill="none"
-                  >
-                    <path
-                      d="M6.00236 3.99707L10.0025 7.99723L6 11.9998"
-                      stroke="currentcolor"
-                      stroke-width="1.3"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    ></path>
-                  </svg>
-                </button>
-              </div>
-              <button nz-button nzType="primary" (click)="openAddTask()">Thêm task</button>
-            </div>
-            <div class="flex items-center rounded-md p-1 bg-indigo-50 gap-px">
+          class="flex flex-col md:flex-row gap-4 items-center justify-between mb-5"
+        >
+          <div class="flex items-center gap-4 bg-white p-2 rounded-full">
+            <h5 class="text-xl leading-8 font-bold text-indigo-600 margin-b-0">
+              {{ monthTitle }}
+              {{ viewCalendarType === 2 ? "- " + weekTitle : "" }}
+            </h5>
+            <div class="flex items-center">
               <button
-                class="calendar-btn cursor-pointer text-white border-outline-none py-2.5 px-5 rounded-md text-sm font-bold transition-all duration-300"
-                [ngClass]="{
-                  'bg-indigo-600 text-white': viewCalendarType === 2,
-                  'bg-indigo-50 text-indigo-600': viewCalendarType !== 2
-                }"
-                (click)="viewCalendarType = 2"
+                class="text-indigo-600 p-1 rounded transition-all duration-300 hover:text-black hover:bg-indigo-600 cursor-pointer"
+                (click)="changeDate('decrease')"
               >
-                Tuần
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                >
+                  <path
+                    d="M10.0002 11.9999L6 7.99971L10.0025 3.99719"
+                    stroke="currentcolor"
+                    stroke-width="1.3"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  ></path>
+                </svg>
               </button>
               <button
-                class="calendar-btn cursor-pointer text-white border-outline-none py-2.5 px-5 rounded-md text-sm font-bold transition-all duration-300"
-                [ngClass]="{
-                  'bg-indigo-600 text-white': viewCalendarType === 3,
-                  'bg-indigo-50 text-indigo-600': viewCalendarType !== 3
-                }"
-                (click)="viewCalendarType = 3"
+                class="text-indigo-600 p-1 rounded transition-all duration-300 hover:text-black hover:bg-indigo-600 cursor-pointer"
+                (click)="changeDate('increase')"
               >
-                Tháng
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                >
+                  <path
+                    d="M6.00236 3.99707L10.0025 7.99723L6 11.9998"
+                    stroke="currentcolor"
+                    stroke-width="1.3"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  ></path>
+                </svg>
               </button>
             </div>
+            <button nz-button nzType="primary" (click)="openAddTask()">
+              Thêm task
+            </button>
+            
           </div>
+          <div class="flex items-center rounded-md p-1 bg-indigo-50 gap-px">
+            <button
+              class="calendar-btn cursor-pointer text-white border-outline-none py-2.5 px-5 rounded-md text-sm font-bold transition-all duration-300"
+              [ngClass]="{
+                'bg-indigo-600 text-white': viewCalendarType === 2,
+                'bg-indigo-50 text-indigo-600': viewCalendarType !== 2
+              }"
+              (click)="viewCalendarType = 2"
+            >
+              Tuần
+            </button>
+            <button
+              class="calendar-btn cursor-pointer text-white border-outline-none py-2.5 px-5 rounded-md text-sm font-bold transition-all duration-300"
+              [ngClass]="{
+                'bg-indigo-600 text-white': viewCalendarType === 3,
+                'bg-indigo-50 text-indigo-600': viewCalendarType !== 3
+              }"
+              (click)="viewCalendarType = 3"
+            >
+              Tháng
+            </button>
+          </div>
+        </div>
           <div
             class="border-indigo rounded-tl-xl rounded-tr-xl min-h-20 h-auto overflow-x-auto slim-scrollbar"
           >
@@ -96,7 +115,7 @@
                   {{ day }}
                 </div>
               </div>
-  
+
               <!-- View Week -->
               <div
                 *ngIf="viewCalendarType === 2"
@@ -111,22 +130,39 @@
                       >{{ day.date.getDate() }}</span
                     >
                     <div class="flex flex-col w-full">
-                      <ng-container *ngFor="let event of getEventsForDay(day.date)">
+                      <ng-container
+                        *ngFor="let event of getEventsForDay(day.date)"
+                      >
                         <div
                           class="h-auto mt-2 px-1 border-gray-200 transition-all"
                         >
                           <div class="rounded p-1.5 flex items-center">
                             @if (!event.isHoliday) {
-                            <div  [ngClass]="{
-                              'pending text-yellow-600 bg-yellow-100 ': event.status === ToDoStatus.Pending,
-                              'progress text-blue-600 bg-blue-200 ': event.status === ToDoStatus.InProgress,
-                              'done text-green-600 bg-green-200 ': event.status === ToDoStatus.Done}"
-                              class="rounded w-full p-1.5 py-2 text-[14px] font-semibold margin-b-0 ml-[8px] flex relative cursor-pointer" (click)="event?.id ? openEditTask(event): ''">
-                              <p
-                              >
+                            <div
+                              [ngClass]="{
+                                'pending text-yellow-600 bg-yellow-100 ':
+                                  event.status === ToDoStatus.Pending,
+                                'progress text-blue-600 bg-blue-200 ':
+                                  event.status === ToDoStatus.InProgress,
+                                'done text-green-600 bg-green-200 ':
+                                  event.status === ToDoStatus.Done
+                              }"
+                              class="rounded w-full p-1.5 py-2 text-[14px] font-semibold margin-b-0 ml-[8px] flex relative cursor-pointer"
+                              (click)="event?.id ? openEditTask(event) : ''"
+                            >
+                              <p class="pr-[2px]">
                                 {{ event.title }}
                               </p>
-                              <div class="text-red-500 absolute right-[4px] top-0"><p class="text-[14px] cursor-pointer font-bold" (click)="deleteTask(event.id, $event)">x</p></div>
+                              <div
+                                class="text-red-500 absolute right-[4px] top-0"
+                              >
+                                <p
+                                  class="text-[14px] cursor-pointer font-bold"
+                                  (click)="deleteTask(event.id, $event)"
+                                >
+                                  x
+                                </p>
+                              </div>
                             </div>
                             } @else {
                             <p
@@ -142,7 +178,7 @@
                   </div>
                 </ng-container>
               </div>
-  
+
               <!-- View Month -->
               <div
                 class="grid grid-cols-7 rounded-b-xl h-auto"
@@ -160,24 +196,41 @@
                     class="text-sm font-semibold text-gray-900 max-w-[15px] w-[15px]"
                     >{{ day.date.getDate() }}</span
                   >
-  
+
                   <div class="flex flex-col w-full">
-                    <ng-container *ngFor="let event of getEventsForDay(day.date)">
+                    <ng-container
+                      *ngFor="let event of getEventsForDay(day.date)"
+                    >
                       <div
                         class="h-auto mt-2 px-1 border-gray-200 transition-all"
                       >
                         <div class="rounded p-1.5 flex items-center">
                           @if (!event.isHoliday) {
-                          <div  [ngClass]="{
-                            'pending text-yellow-600 bg-yellow-100 ': event.status === ToDoStatus.Pending,
-                            'progress text-blue-600 bg-blue-200 ': event.status === ToDoStatus.InProgress,
-                            'done text-green-600 bg-green-200 ': event.status === ToDoStatus.Done}"
-                            class="rounded w-full p-1.5 pr-2 text-[14px] font-semibold margin-b-0 ml-[8px] flex relative cursor-pointer" (click)="event?.id ? openEditTask(event): ''">
-                            <p
-                            >
+                          <div
+                            [ngClass]="{
+                              'pending text-yellow-600 bg-yellow-100 ':
+                                event.status === ToDoStatus.Pending,
+                              'progress text-blue-600 bg-blue-200 ':
+                                event.status === ToDoStatus.InProgress,
+                              'done text-green-600 bg-green-200 ':
+                                event.status === ToDoStatus.Done
+                            }"
+                            class="rounded w-full p-1.5 pr-2 text-[14px] font-semibold margin-b-0 ml-[8px] flex relative cursor-pointer"
+                            (click)="event?.id ? openEditTask(event) : ''"
+                          >
+                            <p class="pr-[4px]">
                               {{ event.title }}
                             </p>
-                            <div class="text-red-500 absolute right-[8px] top-0"><p class="text-[16px] cursor-pointer font-bold" (click)="deleteTask(event.id, $event)">x</p></div>
+                            <div
+                              class="text-red-500 absolute right-[4px] top-0"
+                            >
+                              <p
+                                class="text-[16px] cursor-pointer font-bold"
+                                (click)="deleteTask(event.id, $event)"
+                              >
+                                x
+                              </p>
+                            </div>
                           </div>
                           } @else {
                           <p
@@ -194,8 +247,81 @@
               </div>
             </div>
           </div>
-        </div>
+        </ng-container>
+        <ng-container *ngIf="viewDataType === 0">
+          <div>
+            <h1 class="text-xl font-extrabold">Thông tin danh sách task</h1>
+          </div>
+          <nz-table
+            [nzData]="dataSource"
+            nzOuterBordered
+            nzBordered
+            [nzScroll]="{ x: '1200px' }"
+            [nzFrontPagination]="false"
+            nzSize="small"
+            [nzShowTotal]="totalTpl"
+          >
+            <ng-template #totalTpl let-total let-range="range">
+              <span
+                >{{ range[0] }} - {{ range[1] }} của {{ total }}
+                {{ "đơn" }}</span
+              >
+            </ng-template>
+            <thead>
+              <tr>
+                <th nzWidth="15%" id="date">
+                  {{ "Ngày thực hiện task" }}
+                </th>
+                <th nzWidth="30%" id="title">
+                  {{ "Tiêu đề task" }}
+                </th>
+                <th
+                  nzWidth="38%"
+                  id="description"
+                >
+                  {{ "Mô tả task" }}
+                </th>
+                <th nzWidth="10%" id="status">
+                  {{ "Trạng thái task" }}
+                </th>
+                <th class="tw-max-w-[150px]" id="action"></th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (calendar of dataSource; track calendar.id) {
+              <tr
+                class="cursor-pointer"
+                [ngClass]="{
+                  'text-green-700': calendar.status === ToDoStatus.Pending
+                }"
+                [class.text-blue-500]="
+                  calendar.status === ToDoStatus.InProgress
+                "
+                [class.text-red-500]="calendar.status === ToDoStatus.Done"
+                (click)="openEditTask(calendar)"
+              >
+                <td>{{ calendar.fromDate| date : "dd/MM/yyyy" }}</td>
+                <td>
+                  {{ calendar.title }}
+                </td>
+                <td (click)="click($event)"><app-read-more (click)="click($event)" [value]="calendar.description" [length]="100"></app-read-more></td>
+                <td>{{ getStatusTask(calendar.status) }}</td>
+                <td>
+                  <button
+                    nz-button
+                    nzType="primary"
+                    nzDanger
+                    (click)="deleteTask(calendar.id, $event)"
+                  >
+                    Xóa
+                  </button>
+                </td>
+              </tr>
+              }
+            </tbody>
+          </nz-table>
+        </ng-container>
       </div>
     </div>
   </div>
-  
+</div>

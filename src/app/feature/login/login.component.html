@@ -8,10 +8,10 @@
         <nz-form-control [nzErrorTip]="usernameValueTpl">
           <nz-form-label
             nzSpan="6"
-            [nzFor]="'email'"
+            [nzFor]="'username'"
             nzRequired
             class="font-medium"
-            >Email</nz-form-label
+            >Username</nz-form-label
           >
           <input
             nz-input
@@ -27,7 +27,7 @@
               <p>Email is required</p>
             </ng-container>
             <ng-container *ngIf="control?.hasError('whitespace')">
-              <p>Please enter a valid email address</p>
+              <p>Please enter a valid username</p>
             </ng-container>
           </ng-template>
         </nz-form-control>

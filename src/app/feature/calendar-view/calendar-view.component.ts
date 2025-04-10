@@ -4,6 +4,7 @@ import {
   CalendarRespone,
   IDayListData,
   ToDoStatus,
+  ToDoList,
 } from './calendar-view.interface';
 import moment from 'moment';
 import { CalendarViewApiService } from './calendar-view.service';
@@ -14,10 +15,24 @@ import { TodoAddTaskComponent } from './todo-add-task/todo-add-task.component';
 import { PopUpConfirmComponent } from '../../../shared/ui/pop-up-confirm/pop-up-confirm.component';
 import { TokenDecodeService } from '../../../core/service/token.service';
 import { AuthApiService } from '../../../core/service/auth.service';
-
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzTableModule } from 'ng-zorro-antd/table';
+import { ReadMoreComponent } from "../../../shared/ui/read-more/read-more.component";
 @Component({
   selector: 'app-calendar-view',
-  imports: [CommonModule, NzButtonModule, NzModalModule],
+  imports: [
+    CommonModule,
+    NzButtonModule,
+    NzModalModule,
+    NzSelectModule,
+    ReactiveFormsModule,
+    NzFormModule,
+    FormsModule,
+    NzTableModule,
+    ReadMoreComponent
+],
   providers: [CalendarViewApiService],
   templateUrl: './calendar-view.component.html',
   styleUrl: './calendar-view.component.scss',
@@ -39,10 +54,21 @@ export class CalendarViewComponent implements OnInit {
   viewCalendarType = 3;
   monthTitle: string = '';
   weekTitle: string = '';
-  viewDataType: number = 0;
+  viewDataType: number = 1;
   isViewDataTypeCalendar = false;
   today = new Date();
   ToDoStatus = ToDoStatus;
+  toDoStatusList = ToDoList;
+  viewLeaveTypeList = [
+    {
+      value: 0,
+      label: 'Xem thông tin dạng bảng',
+    },
+    {
+      value: 1,
+      label: 'Xem thông tin dạng lịch',
+    },
+  ];
   constructor(
     private readonly _calendarSvc: CalendarViewApiService,
     private readonly _notification: NzNotificationService,
@@ -65,6 +91,7 @@ export class CalendarViewComponent implements OnInit {
         .subscribe((resp) => {
           if (resp.status) {
             this.dataSource = resp.data;
+            console.log(this.dataSource);
           }
         });
     }
@@ -234,6 +261,7 @@ export class CalendarViewComponent implements OnInit {
   }
 
   changeViewDataType(event: any) {
+    console.log(event);
     this.viewDataType = event;
     localStorage.setItem('viewDataTypeSelfLeave', this.viewDataType.toString());
     if (this.viewDataType === 0) {
@@ -290,7 +318,7 @@ export class CalendarViewComponent implements OnInit {
     });
   }
 
-  deleteTask(id: number, event: Event) {
+  deleteTask(id: string, event: Event) {
     event.stopPropagation();
     const modalRef = this._nzModalSvc.create({
       nzContent: PopUpConfirmComponent,
@@ -299,7 +327,7 @@ export class CalendarViewComponent implements OnInit {
       nzFooter: null,
     });
     modalRef.componentInstance!.clickSubmit.subscribe(() => {
-      this._calendarSvc.deleteTask(id).subscribe((resp: any) => {
+      this._calendarSvc.deleteTask(Number(id)).subscribe((resp) => {
         if (resp.status) {
           modalRef.destroy();
           this._notification.success('Xóa task thành công', '');
@@ -307,5 +335,13 @@ export class CalendarViewComponent implements OnInit {
         }
       });
     });
+  }
+
+  public getStatusTask(number: ToDoStatus) {
+    return this.toDoStatusList.find((item) => item.value === number)?.label;
+  }
+
+  public click(event: Event) {
+    event.stopPropagation();
   }
 }
