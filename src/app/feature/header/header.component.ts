@@ -8,12 +8,12 @@ import {
   NzDropDownDirective,
   NzDropdownMenuComponent,
 } from 'ng-zorro-antd/dropdown';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
 import { UserUpdateInfoComponent } from '../user-update-info/user-update-info.component';
 import { UserUpdatePasswordComponent } from '../user-update-password/user-update-password.component';
-import { NzTabsModule } from 'ng-zorro-antd/tabs';
+import { NzTabComponent, NzTabLinkDirective, NzTabsModule } from 'ng-zorro-antd/tabs';
 @Component({
   selector: 'app-header',
   imports: [
@@ -23,7 +23,10 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
     NzDropDownDirective,
     NzDropdownMenuComponent,
     NzModalModule,
-    NzTabsModule
+    NzTabsModule,
+    RouterLink,
+    NzTabLinkDirective,
+    NzTabComponent
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',

@@ -10,6 +10,7 @@ export interface IHoliday {
 }
 
 export interface IHolidayRequest {
+    id?: number;
     name: string;
     fromDate: string;
     toDate: string;

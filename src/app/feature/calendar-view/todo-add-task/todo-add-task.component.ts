@@ -1,5 +1,5 @@
 import { CommonModule, DatePipe } from '@angular/common';
-import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import {
   ReactiveFormsModule,
   FormsModule,
@@ -12,7 +12,6 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
-import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import {
@@ -24,6 +23,7 @@ import { NZ_MODAL_DATA, NzModalRef } from 'ng-zorro-antd/modal';
 import { whitespaceValidator } from '../../../../shared/util/white-space.validator';
 import { removeAccentedChars } from '../../../../shared/util/string-helpers';
 import { TodoTaskApiService } from './todo-add-task.service';
+import { DateValidatorV2 } from '../../../../shared/util/date.validator';
 
 @Component({
   selector: 'app-todo-add-task',
@@ -40,6 +40,7 @@ import { TodoTaskApiService } from './todo-add-task.service';
     NzDatePickerModule,
   ],
   providers: [TodoTaskApiService, DatePipe],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './todo-add-task.component.html',
   styleUrl: './todo-add-task.component.scss',
 })
@@ -65,7 +66,11 @@ export class TodoAddTaskComponent implements OnInit {
       toDate: new FormControl(''),
       status: new FormControl(ToDoStatus.Pending, [Validators.required]),
       description: new FormControl('', [Validators.required, whitespaceValidator]),
-    });
+    },
+    {
+      validators: [DateValidatorV2.dateRange('fromDate', 'toDate')]
+    }
+  );
   }
 
   ngOnInit(): void {
