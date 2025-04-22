@@ -1,6 +1,75 @@
-<div class="bg-white rounded-lg p-4 mt-4">
+<div class="bg-white p-4  px-6 mt-4">
+  <div class="mt-4 flex justify-between items-center">
+    <h1 class="text-xl font-extrabold">Thông tin các ngày nghỉ</h1>
     <button nz-button nzType="primary" (click)="onAddHoliday()">
         <i nz-icon nzType="plus" nzTheme="outline"></i>
         Thêm ngày nghỉ
-    </button>
+      </button>
+  </div>
+  <div class="mt-2">
+    <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+        <input type="text" nz-input placeholder="Tên ngày nghỉ" [(ngModel)]="keyword" (keyup.enter)="getHolidayData()"/>
+      </nz-input-group>
+      <ng-template #suffixIconButton>
+        <button nz-button nzType="primary" nzSearch><nz-icon nzType="search" (click)="getHolidayData()"/></button>
+      </ng-template>
+  </div>
+ <div class="mt-5">
+    <nz-table
+    [nzData]="dataSource"
+    [nzTotal]="this.tableConfig.totalRecords"
+    [nzScroll]="{ x: '1200px' }"
+    nzSize="small"
+    [nzPageSizeOptions]="pageSizeOptions"
+    [nzShowTotal]="totalTpl"
+    (nzPageIndexChange)="onChangePageIndex($event)"
+    (nzPageSizeChange)="onPageSizeChange($event)"
+  >
+    <ng-template #totalTpl let-total let-range="range">
+      <span>{{ range[0] }} - {{ range[1] }} của {{ total }} {{ "ngày nghỉ" }}</span>
+    </ng-template>
+    <thead>
+      <tr>
+        <th nzWidth="15%" id="date">
+          {{ "Tên ngày nghỉ" }}
+        </th>
+        <th nzWidth="30%" id="title">
+          {{ "Ngày bắt đầu" }}
+        </th>
+        <th nzWidth="38%" id="description">
+          {{ "Ngày kết thúc" }}
+        </th>
+        <th nzWidth="10%" id="status">
+          {{ "Ngày lễ hằng năm" }}
+        </th>
+        <th class="tw-max-w-[150px]" id="action"></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (holiday of dataSource; track holiday.id) {
+      <tr class="cursor-pointer" (click)="openEditTask(holiday)">
+        <td>{{ holiday.name }}</td>
+        <td>
+          {{ holiday.fromDate | date : "dd/MM/yyyy" }}
+        </td>
+        <td>
+          {{ holiday.toDate | date : "dd/MM/yyyy" }}
+        </td>
+        <td>{{ holiday.isAnnualHoliday ? "Có" : "Không" }}</td>
+        <td>
+          <button
+            nz-button
+            nzType="primary"
+            nzDanger
+            (click)="deleteTask(holiday.id, $event)"
+          >
+            Xóa
+          </button>
+        </td>
+      </tr>
+      }
+    </tbody>
+  </nz-table>
+ </div>
+  
 </div>

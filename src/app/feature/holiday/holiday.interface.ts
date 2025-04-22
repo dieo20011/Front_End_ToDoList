@@ -9,6 +9,11 @@ export interface IHoliday {
     isAnnualHoliday: boolean;
 }
 
+export interface IHolidayResponse {
+    items: IHoliday[];
+    totalRecords: number;
+}
+
 export interface IHolidayRequest {
     id?: number;
     name: string;
@@ -16,4 +21,10 @@ export interface IHolidayRequest {
     toDate: string;
     isAnnualHoliday: boolean;
     description: string;
+}
+
+export interface IHolidayRequestPaing {
+    pageIndex: number;
+    pageSize: number;
+    keyword: string;
 }

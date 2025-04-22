@@ -5,7 +5,41 @@ body {
   background: rgb(34,193,195);
   background: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%);
 }
+nz-table {
+  .ant-table-thead>tr.ant-table-row {
+    th{
+    border: 1px solid #eceaea;
+    }
+  }
+  .ant-table-tbody>tr.ant-table-row {
+    td{
+    border: 1px solid #eceaea;
+    }
+  }
+  .ant-table-tbody>tr.ant-table-row {
+    &:hover>td {
+      opacity: 70%;
+    }
+  }
 
+  nz-pagination {
+    .ant-pagination-total-text {
+      position: absolute;
+      left: 0;
+    }
+
+    .ant-pagination-options {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+
+  .hover-row:hover {
+    cursor: pointer;
+    background-color: #eceaea;
+  }
+}
 p {
   margin-bottom: 0px !important;
 }

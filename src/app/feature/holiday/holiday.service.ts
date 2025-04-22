@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IHoliday, IHolidayRequest } from './holiday.interface';
+import { IHolidayRequest, IHolidayRequestPaing, IHolidayResponse } from './holiday.interface';
 import { ApiResponse } from '../../../core/models/api/api.model';
 import { environment } from '../../../environments/environment';
 
@@ -11,9 +11,18 @@ export class HolidayService {
 
   constructor(private readonly httpClient: HttpClient) {}
 
-  public getAllHoLidayData(userId: string) {
-    return this.httpClient.get<ApiResponse<IHoliday[]>>(this._base + '/api/holiday/get/' + userId);
+  public getAllHolidayData(userId: string, request: IHolidayRequestPaing) {
+    const params = new HttpParams()
+      .set('pageIndex', request.pageIndex.toString())
+      .set('pageSize', request.pageSize.toString())
+      .set('keyword', request.keyword || '');
+  
+    return this.httpClient.get<ApiResponse<IHolidayResponse>>(
+      `${this._base}/api/holiday/get/${userId}`,
+      { params }
+    );
   }
+  
 
   public getDetailHoLidayData(userId: string, holidayId: number) {
     return this.httpClient.get<ApiResponse<IHolidayRequest>>(this._base + '/api/holiday/get/detail/' + userId + '/' + holidayId);
