@@ -11,7 +11,7 @@ export interface IHoliday {
 
 export interface IHolidayResponse {
     items: IHoliday[];
-    totalRecords: number;
+    totalRecord: number;
 }
 
 export interface IHolidayRequest {

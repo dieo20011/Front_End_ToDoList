@@ -9,7 +9,7 @@ import vi from '@angular/common/locales/vi';
 import { routes } from './app.routes';
 import { registerLocaleData } from '@angular/common';
 import * as fnsLocale from 'date-fns/locale';
-import { NZ_DATE_LOCALE} from 'ng-zorro-antd/i18n';
+import { NZ_DATE_LOCALE, NZ_I18N, vi_VN } from 'ng-zorro-antd/i18n';
 import { HttpClient, provideHttpClient, withInterceptors, withInterceptorsFromDi, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ErrorInterceptor } from '../core/service/intercreptor.service';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -22,6 +22,7 @@ registerLocaleData(en);
 registerLocaleData(vi);
 export const appConfig: ApplicationConfig = {
   providers: [
+    { provide: NZ_I18N, useValue: vi_VN },
     { provide: NZ_DATE_LOCALE, useValue: fnsLocale.vi },
     provideRouter(
       routes,

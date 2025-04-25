@@ -1,6 +1,12 @@
+import { IHoliday } from "../holiday/holiday.interface";
+
 export interface IDayListData {
   date: Date;
   isOtherMonth: boolean;
+}
+
+export interface IHolidayAll {
+  items: IHoliday[];
 }
 
 export interface CalendarRespone {

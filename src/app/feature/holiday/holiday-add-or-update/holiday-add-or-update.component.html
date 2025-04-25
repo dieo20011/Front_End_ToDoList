@@ -44,6 +44,16 @@
         </nz-form-control>
       </nz-form-item>
       <nz-form-item class="no-margin">
+        <nz-form-label nzSpan="6" nzRequired nzFor="name" class="font-medium">Là ngày nghỉ cố định</nz-form-label>
+        <nz-form-control [nzErrorTip]="descriptionValueTpl">
+          <label nz-checkbox formControlName="isAnnualHoliday" class="tw-font-medium"></label>
+          <ng-template #descriptionValueTpl let-control>
+            <ng-container *ngIf="!form.get('description')?.value">{{ 'Trường này bắt buộc' }}</ng-container>
+            <ng-container *ngIf="form.get('description')?.hasError('whitespace')">{{ 'Vui lòng nhập mô tả hợp lệ' }}</ng-container>
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item class="no-margin">
         <nz-form-label nzSpan="6" nzRequired nzFor="name" class="font-medium">Mô tả</nz-form-label>
         <nz-form-control [nzErrorTip]="descriptionValueTpl">
             <textarea nz-input formControlName="description" placeholder="Mô tả" class="tw-w-full" [nzAutosize]="{ minRows: 2, maxRows: 6 }"></textarea>

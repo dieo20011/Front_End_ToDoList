@@ -12,7 +12,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { DateValidatorV2 } from '../../../../shared/util/date.validator';
-
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 @Component({
   selector: 'app-holiday-add-or-update',
   imports: [
@@ -26,6 +26,7 @@ import { DateValidatorV2 } from '../../../../shared/util/date.validator';
     NzSelectModule,
     NzButtonModule,
     NzDatePickerModule,
+    NzCheckboxModule,
   ],
   providers: [HolidayService, DatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -75,7 +76,7 @@ export class HolidayAddOrUpdateComponent {
     const data = {
       ...this.form.value,
       fromDate: this.formatDate(this.form.get('fromDate')?.value),
-      toDate: this.formatDate(this.form.get('fromDate')?.value),
+      toDate: this.formatDate(this.form.get('toDate')?.value),
       userId: this.data.userId ?? '',
     };
     if (!this.data?.data) {

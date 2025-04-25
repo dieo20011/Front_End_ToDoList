@@ -16,6 +16,7 @@ import { HolidayAddOrUpdateComponent } from './holiday-add-or-update/holiday-add
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { PopUpConfirmComponent } from '../../../shared/ui/pop-up-confirm/pop-up-confirm.component';
+import { NzTableDefaultSettingDirective } from '../../../shared/directive/nz-table-default-setting.directive';
 @Component({
   selector: 'app-holiday',
   imports: [
@@ -29,7 +30,9 @@ import { PopUpConfirmComponent } from '../../../shared/ui/pop-up-confirm/pop-up-
     NzTableModule,
     NzInputModule,
     NzIconModule,
-  ],
+    NzTableDefaultSettingDirective,
+    ReadMoreComponent
+],
   templateUrl: './holiday.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [HolidayService],
@@ -75,7 +78,8 @@ export class HolidayComponent implements OnInit {
           next: (resp) => {
             if (resp.status) {
               this.dataSource = resp.data.items;
-              this.tableConfig.totalRecords = resp.data.totalRecords;
+              this.tableConfig.totalRecords = resp.data.totalRecord;
+              console.log(this.tableConfig.totalRecords);
             }
           },
           error: (error) => {

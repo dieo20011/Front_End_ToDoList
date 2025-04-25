@@ -20,6 +20,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { ReadMoreComponent } from "../../../shared/ui/read-more/read-more.component";
+import { HolidayService } from '../holiday/holiday.service';
+import { IHoliday } from '../holiday/holiday.interface';
 @Component({
   selector: 'app-calendar-view',
   imports: [
@@ -33,7 +35,7 @@ import { ReadMoreComponent } from "../../../shared/ui/read-more/read-more.compon
     NzTableModule,
     ReadMoreComponent
 ],
-  providers: [CalendarViewApiService],
+  providers: [CalendarViewApiService, HolidayService],
   templateUrl: './calendar-view.component.html',
   styleUrl: './calendar-view.component.scss',
 })
@@ -59,6 +61,7 @@ export class CalendarViewComponent implements OnInit {
   today = new Date();
   ToDoStatus = ToDoStatus;
   toDoStatusList = ToDoList;
+  holidayData: IHoliday[] = [];
   viewLeaveTypeList = [
     {
       value: 0,
@@ -71,6 +74,7 @@ export class CalendarViewComponent implements OnInit {
   ];
   constructor(
     private readonly _calendarSvc: CalendarViewApiService,
+    private readonly _holidaySvc: HolidayService,
     private readonly _notification: NzNotificationService,
     private readonly _authSvc: AuthApiService,
     private readonly _tokenSvc: TokenDecodeService,
@@ -91,9 +95,13 @@ export class CalendarViewComponent implements OnInit {
         .subscribe((resp) => {
           if (resp.status) {
             this.dataSource = resp.data;
-            console.log(this.dataSource);
           }
         });
+      this._calendarSvc.getHolidayData(this.tokenDetails?.userId).subscribe((resp) => {
+        if (resp.status) {
+          this.holidayData = resp.data.items;
+        }
+      });
     }
   }
 
@@ -221,6 +229,49 @@ export class CalendarViewComponent implements OnInit {
     const dayOfWeek = this.adjustWeekdayIndex(normalizedDate.getDay());
 
     const year = normalizedDate.getFullYear(); // lấy năm hiện tại
+
+
+    const holiday = this.holidayData.find(holiday => {
+      const holidayDate = new Date(holiday.fromDate);
+      holidayDate.setHours(0, 0, 0, 0);
+
+      const holidayDayOfMonth = holidayDate.getDate();
+      const holidayMonth = holidayDate.getMonth();
+      const holidayYear = holidayDate.getFullYear();
+
+      if (holiday.isAnnualHoliday) {
+        // Nếu holiday.isHolidayByYear là true, hiển thị sự kiện này vào ngày lễ bất kể năm nào
+        return holidayDayOfMonth === dayOfMonth && holidayMonth === month;
+      } else {
+        // Nếu holiday.isHolidayByYear là false, chỉ hiển thị nếu năm của sự kiện trùng với năm hiện tại
+        return holidayDayOfMonth === dayOfMonth && holidayMonth === month && holidayYear === year;
+      }
+    });
+
+    // Nếu tìm thấy ngày lễ
+    if (holiday) {
+      // Kiểm tra xem ngày lễ có trùng vào cuối tuần không
+      if (dayOfWeek === 6 || dayOfWeek === 5) {
+        return [
+          {
+            title: 'Cuối tuần',
+            fromDate: normalizedDate.toISOString(),
+            toDate: normalizedDate.toISOString(),
+            avatar: '',
+          },
+        ];
+      } else {
+        // Nếu không phải cuối tuần, hiển thị tên ngày lễ
+        return [
+          {
+            title: holiday.name,
+            fromDate: normalizedDate.toISOString(),
+            toDate: normalizedDate.toISOString(),
+            avatar: '',
+          },
+        ];
+      }
+    }
 
     // Kiểm tra cuối tuần (nếu không có holiday)
     if (dayOfWeek === 6 || dayOfWeek === 5) {

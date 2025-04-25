@@ -11,38 +11,46 @@
         <input type="text" nz-input placeholder="Tên ngày nghỉ" [(ngModel)]="keyword" (keyup.enter)="getHolidayData()"/>
       </nz-input-group>
       <ng-template #suffixIconButton>
-        <button nz-button nzType="primary" nzSearch><nz-icon nzType="search" (click)="getHolidayData()"/></button>
+        <button nz-button nzType="primary" nzSearch aria-label="Tìm kiếm"><nz-icon nzType="search" (click)="getHolidayData()"/></button>
       </ng-template>
   </div>
  <div class="mt-5">
     <nz-table
     [nzData]="dataSource"
-    [nzTotal]="this.tableConfig.totalRecords"
+    [nzTotal]="tableConfig.totalRecords"
+    appNzTableDefaultSetting
     [nzScroll]="{ x: '1200px' }"
     nzSize="small"
     [nzPageSizeOptions]="pageSizeOptions"
+    [nzShowPagination]="true"
     [nzShowTotal]="totalTpl"
+    [(nzPageIndex)]="tableConfig.pageIndex"
+    [(nzPageSize)]="tableConfig.pageSize"
     (nzPageIndexChange)="onChangePageIndex($event)"
     (nzPageSizeChange)="onPageSizeChange($event)"
+    [nzFrontPagination]="false"
   >
     <ng-template #totalTpl let-total let-range="range">
       <span>{{ range[0] }} - {{ range[1] }} của {{ total }} {{ "ngày nghỉ" }}</span>
     </ng-template>
     <thead>
       <tr>
-        <th nzWidth="15%" id="date">
+        <th nzWidth="15%" id="title">
           {{ "Tên ngày nghỉ" }}
         </th>
-        <th nzWidth="30%" id="title">
+        <th nzWidth="15%" id="fromDate">
           {{ "Ngày bắt đầu" }}
         </th>
-        <th nzWidth="38%" id="description">
+        <th nzWidth="15%" id="toDate">
           {{ "Ngày kết thúc" }}
+        </th>
+        <th nzWidth="38%" id="description">
+          {{ "Mô tả" }}
         </th>
         <th nzWidth="10%" id="status">
           {{ "Ngày lễ hằng năm" }}
         </th>
-        <th class="tw-max-w-[150px]" id="action"></th>
+        <th class="tw-max-w-[150px] tw-text-center" id="action"></th>
       </tr>
     </thead>
     <tbody>
@@ -55,8 +63,11 @@
         <td>
           {{ holiday.toDate | date : "dd/MM/yyyy" }}
         </td>
-        <td>{{ holiday.isAnnualHoliday ? "Có" : "Không" }}</td>
         <td>
+          <app-read-more [value]="holiday.description" [length]="100"></app-read-more>
+        </td>
+        <td nz-checkbox [nzChecked]="holiday.isAnnualHoliday" [nzDisabled]="true"></td>
+        <td class="flex justify-center">
           <button
             nz-button
             nzType="primary"
