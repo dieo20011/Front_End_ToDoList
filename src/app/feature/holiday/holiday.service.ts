@@ -36,6 +36,10 @@ export class HolidayService {
     return this.httpClient.put<ApiResponse<never>>(this._base + '/api/holiday/update/' + id, data);
   }
 
+  public updateAnnualHoliday(userId: string, holidayId: number, isAnnualHoliday: boolean) {
+    return this.httpClient.put<ApiResponse<never>>(this._base + '/api/holiday/update-status/' + userId  + '/' + holidayId, isAnnualHoliday);
+  }
+
   public deleteHoliday(userId: number, holidayId: number) {
     return this.httpClient.delete<ApiResponse<never>>(this._base + '/api/holiday/delete/' + userId + '/' + holidayId);
   }

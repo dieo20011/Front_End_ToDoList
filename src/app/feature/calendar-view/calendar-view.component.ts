@@ -258,6 +258,7 @@ export class CalendarViewComponent implements OnInit {
             fromDate: normalizedDate.toISOString(),
             toDate: normalizedDate.toISOString(),
             avatar: '',
+            isHoliday: true,
           },
         ];
       } else {
@@ -268,6 +269,7 @@ export class CalendarViewComponent implements OnInit {
             fromDate: normalizedDate.toISOString(),
             toDate: normalizedDate.toISOString(),
             avatar: '',
+            isHoliday: true,
           },
         ];
       }

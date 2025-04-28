@@ -66,7 +66,7 @@
         <td>
           <app-read-more [value]="holiday.description" [length]="100"></app-read-more>
         </td>
-        <td nz-checkbox [nzChecked]="holiday.isAnnualHoliday" [nzDisabled]="true"></td>
+        <td [nzChecked]="holiday.isAnnualHoliday" (click)="onChangeAnnualHoliday(holiday, $event)"></td>
         <td class="flex justify-center">
           <button
             nz-button

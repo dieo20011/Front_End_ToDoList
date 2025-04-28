@@ -79,7 +79,6 @@ export class HolidayComponent implements OnInit {
             if (resp.status) {
               this.dataSource = resp.data.items;
               this.tableConfig.totalRecords = resp.data.totalRecord;
-              console.log(this.tableConfig.totalRecords);
             }
           },
           error: (error) => {
@@ -107,7 +106,7 @@ export class HolidayComponent implements OnInit {
     });
   }
 
-  openEditTask(data: IHoliday) {
+  public openEditTask(data: IHoliday) {
     const modalRef = this._nzModalSvc.create({
       nzContent: HolidayAddOrUpdateComponent,
       nzWidth: 700,
@@ -122,7 +121,7 @@ export class HolidayComponent implements OnInit {
     });
   }
 
-  deleteTask(id: number, event: Event) {
+  public deleteTask(id: number, event: Event) {
     event.stopPropagation();
     const modalRef = this._nzModalSvc.create({
       nzContent: PopUpConfirmComponent,
@@ -141,16 +140,27 @@ export class HolidayComponent implements OnInit {
     });
   }
 
-  onChangePageIndex(pageIndex: number) {
+  public onChangePageIndex(pageIndex: number) {
     this.tableConfig.pageIndex = pageIndex;
     this.getHolidayData();
   }
 
-  onPageSizeChange(pageSize: number) {
+  public onPageSizeChange(pageSize: number) {
     const maxPageIndex = Math.ceil(this.tableConfig.totalRecords / pageSize);
     this.tableConfig.pageSize = pageSize;
     if (this.tableConfig.pageIndex <= maxPageIndex) {
       this.getHolidayData();
     }
+  }
+
+  public onChangeAnnualHoliday(holiday: IHoliday, event: Event) {
+    event.stopPropagation();
+    holiday.isAnnualHoliday = !holiday.isAnnualHoliday;
+    this.holidayService.updateAnnualHoliday(this.tokenDetails?.userId, holiday.id, holiday.isAnnualHoliday).subscribe((resp) => {
+      if (resp.status) {
+        this._notification.success('Cập nhật ngày lễ thành công', '');
+        this.getHolidayData();
+      }
+    });
   }
 }

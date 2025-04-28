@@ -6,7 +6,7 @@ import { AuthGuard } from '../core/guard/auth.guard';
 import { GuestGuard } from '../core/guard/guest.guard';
 import { HolidayComponent } from './feature/holiday/holiday.component';
 import { CalendarViewComponent } from './feature/calendar-view/calendar-view.component';
-
+import { NewsComponent } from './feature/news/news.component';
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   {
@@ -26,6 +26,10 @@ export const routes: Routes = [
       {
         path: 'holiday',
         component: HolidayComponent
+      },
+      {
+        path: 'news',
+        component: NewsComponent
       },
     ]
   },
