@@ -12,3 +12,4 @@ export interface SuccessResult<T> {
   
   export type ApiResponse<T> = SuccessResult<T> | ErrorResult;
   
+  

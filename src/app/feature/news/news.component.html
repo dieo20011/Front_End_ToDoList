@@ -1,1 +1,32 @@
-<p>news works!</p>
+<div class="bg-white p-6 mt-4">
+   <div>
+    <h1 class="text-xl font-extrabold">Thông tin các danh mục</h1>
+    <nz-select
+    class="w-[200px]"
+    [(ngModel)]="selectedQuery"
+    [nzSize]="'large'"
+    [nzPlaceHolder]="'Chọn danh mục'"
+    (ngModelChange)="onChangeQuery()"
+  >
+    <nz-option
+      *ngFor="let query of queryList"
+      [nzLabel]="query.name"
+      [nzValue]="query.query"
+    ></nz-option>
+  </nz-select>
+   </div>
+   <div *ngIf="newLists.length > 0">
+        <ng-container *ngFor="let item of newLists">
+            <div class="flex gap-4 mt-4">
+                <div class="max-w-[200px] max-h-[100px]">
+                    <img [src]="item.urlToImage ?? 'https://img.freepik.com/free-vector/gradient-breaking-news-logo-design_23-2151157239.jpg'" alt="" class="w-full h-full object-cover">
+                </div>
+                <div>
+                    <h1>{{item.title}}</h1>
+                    <p>{{item.description}}</p>
+                    <p>{{item.content}}</p>
+                </div>
+            </div>
+        </ng-container>
+   </div>
+</div>
