@@ -71,7 +71,18 @@
             <button nz-button nzType="primary" (click)="openAddTask()">
               Thêm task
             </button>
-            
+            <nz-select
+            class="w-[210px]"
+            [(ngModel)]="statusToDo"
+            [nzPlaceHolder]="'Xem thông tin dạng'"
+            (ngModelChange)="getAllToDoListData()"
+          >
+            <nz-option
+              *ngFor="let status of ToDoStatusList"
+              [nzLabel]="status.label"
+              [nzValue]="status.value"
+            ></nz-option>
+          </nz-select>
           </div>
           <div class="flex items-center rounded-md p-1 bg-indigo-50 gap-px">
             <button

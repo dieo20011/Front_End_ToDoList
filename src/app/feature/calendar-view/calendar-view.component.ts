@@ -72,6 +72,13 @@ export class CalendarViewComponent implements OnInit {
       label: 'Xem thông tin dạng lịch',
     },
   ];
+  statusToDo: number = 0;
+  ToDoStatusList = [
+    { value: 3, label: 'Tất cả' },
+    { value: 0, label: 'Chưa làm' },
+    { value: 1, label: 'Đang tiến hành' },
+    { value: 2, label: 'Hoàn thành' },
+  ];
   constructor(
     private readonly _calendarSvc: CalendarViewApiService,
     private readonly _holidaySvc: HolidayService,
@@ -91,7 +98,7 @@ export class CalendarViewComponent implements OnInit {
     );
     if (this.tokenDetails?.userId) {
       this._calendarSvc
-        .getAllToDoListData(this.tokenDetails?.userId)
+        .getAllToDoListData(this.tokenDetails?.userId, this.statusToDo)
         .subscribe((resp) => {
           if (resp.status) {
             this.dataSource = resp.data;
