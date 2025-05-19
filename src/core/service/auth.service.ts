@@ -10,7 +10,7 @@ export class AuthApiService {
 
   constructor(private readonly httpClient: HttpClient) {}
 
-  public signup(data: {fullname: string, username: string, password: string}) {
+  public signup(data: {fullname: string, username: string, email: string, password: string}) {
     return this.httpClient.post<ApiResponse<UserProfile>>(this._base + '/api/auth/register', data);
   }
 
@@ -18,7 +18,7 @@ export class AuthApiService {
     return this.httpClient.post<ApiResponse<UserProfile>>(this._base + '/api/auth/login', data);
   }
 
-  public updateUserInfo(id: string, data: {fullname: string, username: string}) {
+  public updateUserInfo(id: string, data: {fullname: string, username: string, email: string}) {
       return this.httpClient.put<ApiResponse<never>>(this._base + '/api/auth/update-info/' + id, data);
   }
 

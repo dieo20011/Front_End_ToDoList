@@ -14,9 +14,9 @@
             formControlName="fullname"
             id="fullname"
             placeholder="Enter your Full Name"
-            [ngClass]="{ 'input-focus': emailFocused }"
-            (focus)="onFocusEmail()"
-            (blur)="onBlurEmail()"
+            [ngClass]="{ 'input-focus': fullnameFocused }"
+            (focus)="onFocusFullname()"
+            (blur)="onBlurFullname()"
           />
           <ng-template #fullnameValueTpl let-control>
             <ng-container *ngIf="control?.hasError('required')">
@@ -51,6 +51,36 @@
             </ng-container>
             <ng-container *ngIf="control?.hasError('whitespace')">
               <p>Please enter a valid name</p>
+            </ng-container>
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+
+       <!-- Email input -->
+       <nz-form-item class="margin-0">
+        <nz-form-control [nzErrorTip]="emailValueTpl">
+          <nz-form-label nzSpan="6" [nzFor]="'email'" nzRequired
+            >Email</nz-form-label
+          >
+          <input
+            nz-input
+            formControlName="email"
+            id="email"
+            placeholder="Enter your email"
+            [ngClass]="{ 'input-focus': emailFocused }"
+            (focus)="onFocusEmail()"
+            (blur)="onBlurEmail()"
+            (input)="removeLeadingWhitespace($event)"
+          />
+          <ng-template #emailValueTpl let-control>
+            <ng-container *ngIf="control?.hasError('required')">
+              <p>Email is required</p>
+            </ng-container>
+            <ng-container *ngIf="control?.hasError('whitespace')">
+              <p>Please enter a valid email</p>
+            </ng-container>
+            <ng-container *ngIf="control?.hasError('email')">
+              <p>Please enter a valid email</p>
             </ng-container>
           </ng-template>
         </nz-form-control>

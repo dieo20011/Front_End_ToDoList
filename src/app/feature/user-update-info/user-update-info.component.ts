@@ -44,6 +44,7 @@ export class UserUpdateInfoComponent implements OnInit {
     this.form = this.fb.group({
       fullname: ['', [Validators.required, whitespaceValidator]],
       username: ['', [Validators.required, whitespaceValidator]],
+      email: ['', [Validators.required, whitespaceValidator]],
     });
   }
   ngOnInit(): void {
@@ -57,7 +58,8 @@ export class UserUpdateInfoComponent implements OnInit {
   update() {
     const data = {
       fullname: this.form.get('fullname')?.value.trim(),
-      username: this.form.get('username')?.value.trim()
+      username: this.form.get('username')?.value.trim(),
+      email: this.form.get('email')?.value.trim(),
     };
     this._authSvc.updateUserInfo(this.id, data).subscribe((resp) => {
       if(resp.status) {

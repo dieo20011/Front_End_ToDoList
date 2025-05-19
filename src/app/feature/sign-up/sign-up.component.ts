@@ -36,6 +36,7 @@ export class SignUpComponent {
   signupForm!: FormGroup;
   usernameFocused = false;
   emailFocused = false;
+  fullnameFocused = false;
   passwordFocused = false;
   isNewPasswordVisible = true;
 
@@ -50,6 +51,7 @@ export class SignUpComponent {
     this.signupForm = this.fb.group({
       fullname: ['', [Validators.required, whitespaceValidator]],
       username: ['', [Validators.required, whitespaceValidator]],
+      email: ['', [Validators.required, whitespaceValidator, Validators.email]],
       password: ['', [Validators.required]],
     });
   }
@@ -59,6 +61,7 @@ export class SignUpComponent {
       fullname: this.signupForm.get('fullname')?.value,
       username: this.signupForm.get('username')?.value,
       password: this.signupForm.get('password')?.value,
+      email: this.signupForm.get('email')?.value,
     };
     this._authSvc.signup(data).subscribe({
       next: (resp) => {
@@ -96,6 +99,14 @@ export class SignUpComponent {
 
   onBlurUsername(): void {
     this.usernameFocused = false;
+  }
+
+  onFocusFullname(): void {
+    this.fullnameFocused = true;
+  }
+
+  onBlurFullname(): void {
+    this.fullnameFocused = false;
   }
 
   removeLeadingWhitespace(event: Event): void {

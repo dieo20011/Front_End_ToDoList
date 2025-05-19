@@ -16,8 +16,8 @@ This Angular project uses different environment configurations for development a
    ```typescript
    export const environment = {
        production: true,
-       DOMAIN: 'https://your-frontend-domain.vercel.app', // Update with your Vercel app URL
-       API_DOMAIN: 'https://your-render-api-domain.onrender.com', // Update with your Render API URL
+       DOMAIN: 'https://todolist-angular-tau.vercel.app',
+       API_DOMAIN: 'https://todolist-fs.onrender.com',
        API_NEW_KEY: 'b810a73fabed4ec187bff9e8165571cd',
    };
    ```
@@ -36,6 +36,31 @@ This Angular project uses different environment configurations for development a
    - Connect your GitHub repository to Vercel
    - Set the build command in Vercel to: `ng build --configuration=production`
    - Set the output directory to: `dist/todolist-fe`
+   - In the Vercel project settings, set the Framework Preset to "Angular"
+
+## Fixing the "/sockjs-node/iframe.html" Error
+
+If you're seeing errors about missing "/sockjs-node/iframe.html", this is because sockjs is a development-only feature for hot reloading. To fix this:
+
+1. Make sure you're using the production build configuration:
+   ```
+   ng build --configuration=production
+   ```
+
+2. In your Vercel deployment settings:
+   - Set the build command to `ng build --configuration=production`
+   - Set Framework Preset to "Angular"
+   - Do not use custom development commands like `ng serve`
+
+3. If you still see the error in your Vercel logs, add this to your `vercel.json` file at the root of your project:
+
+   ```json
+   {
+     "rewrites": [
+       { "source": "/sockjs-node/(.*)", "destination": "/404.html" }
+     ]
+   }
+   ```
 
 ## How It Works
 
