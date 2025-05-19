@@ -234,68 +234,10 @@ export class CalendarViewComponent implements OnInit {
     const dayOfMonth = normalizedDate.getDate();
     const month = normalizedDate.getMonth();
     const dayOfWeek = this.adjustWeekdayIndex(normalizedDate.getDay());
+    const year = normalizedDate.getFullYear();
 
-    const year = normalizedDate.getFullYear(); // lấy năm hiện tại
-
-
-    const holiday = this.holidayData.find(holiday => {
-      const holidayDate = new Date(holiday.fromDate);
-      holidayDate.setHours(0, 0, 0, 0);
-
-      const holidayDayOfMonth = holidayDate.getDate();
-      const holidayMonth = holidayDate.getMonth();
-      const holidayYear = holidayDate.getFullYear();
-
-      if (holiday.isAnnualHoliday) {
-        // Nếu holiday.isHolidayByYear là true, hiển thị sự kiện này vào ngày lễ bất kể năm nào
-        return holidayDayOfMonth === dayOfMonth && holidayMonth === month;
-      } else {
-        // Nếu holiday.isHolidayByYear là false, chỉ hiển thị nếu năm của sự kiện trùng với năm hiện tại
-        return holidayDayOfMonth === dayOfMonth && holidayMonth === month && holidayYear === year;
-      }
-    });
-
-    // Nếu tìm thấy ngày lễ
-    if (holiday) {
-      // Kiểm tra xem ngày lễ có trùng vào cuối tuần không
-      if (dayOfWeek === 6 || dayOfWeek === 5) {
-        return [
-          {
-            title: 'Cuối tuần',
-            fromDate: normalizedDate.toISOString(),
-            toDate: normalizedDate.toISOString(),
-            avatar: '',
-            isHoliday: true,
-          },
-        ];
-      } else {
-        // Nếu không phải cuối tuần, hiển thị tên ngày lễ
-        return [
-          {
-            title: holiday.name,
-            fromDate: normalizedDate.toISOString(),
-            toDate: normalizedDate.toISOString(),
-            avatar: '',
-            isHoliday: true,
-          },
-        ];
-      }
-    }
-
-    // Kiểm tra cuối tuần (nếu không có holiday)
-    if (dayOfWeek === 6 || dayOfWeek === 5) {
-      return [
-        {
-          title: 'Cuối tuần',
-          fromDate: normalizedDate.toISOString(),
-          toDate: normalizedDate.toISOString(),
-          avatar: '',
-          isHoliday: true,
-        },
-      ];
-    }
-    // Nếu không có holiday hoặc cuối tuần, trả về các sự kiện từ dataSource
-    return this.dataSource.filter((event) => {
+    // 1. Check for events from API
+    const events = this.dataSource.filter((event) => {
       const eventFromDate = new Date(event.fromDate);
       const eventToDate = new Date(event.toDate);
 
@@ -308,6 +250,57 @@ export class CalendarViewComponent implements OnInit {
 
       return localFromDate <= normalizedDate && localToDate >= normalizedDate;
     });
+
+    if (events.length > 0) {
+      // If there are events, show them (even on weekends)
+      return events;
+    }
+
+    // 2. Check for holiday
+    const holiday = this.holidayData.find(holiday => {
+      const holidayDate = new Date(holiday.fromDate);
+      holidayDate.setHours(0, 0, 0, 0);
+
+      const holidayDayOfMonth = holidayDate.getDate();
+      const holidayMonth = holidayDate.getMonth();
+      const holidayYear = holidayDate.getFullYear();
+
+      if (holiday.isAnnualHoliday) {
+        return holidayDayOfMonth === dayOfMonth && holidayMonth === month;
+      } else {
+        return holidayDayOfMonth === dayOfMonth && holidayMonth === month && holidayYear === year;
+      }
+    });
+
+    if (holiday) {
+      return [
+        {
+          title: holiday.name,
+          fromDate: normalizedDate.toISOString(),
+          toDate: normalizedDate.toISOString(),
+          avatar: '',
+          isHoliday: true,
+          isWeekend: false,
+        },
+      ];
+    }
+
+    // 3. Check for weekend
+    if (dayOfWeek === 6 || dayOfWeek === 5) {
+      return [
+        {
+          title: 'Cuối tuần',
+          fromDate: normalizedDate.toISOString(),
+          toDate: normalizedDate.toISOString(),
+          avatar: '',
+          isHoliday: true,
+          isWeekend: true,
+        },
+      ];
+    }
+
+    // 4. No event, no holiday, not weekend
+    return [];
   }
 
   // Get Week by currentDate
@@ -387,7 +380,7 @@ export class CalendarViewComponent implements OnInit {
       nzFooter: null,
     });
     modalRef.componentInstance!.clickSubmit.subscribe(() => {
-      this._calendarSvc.deleteTask(Number(id)).subscribe((resp) => {
+      this._calendarSvc.deleteTask((id)).subscribe((resp) => {
         if (resp.status) {
           modalRef.destroy();
           this._notification.success('Xóa task thành công', '');

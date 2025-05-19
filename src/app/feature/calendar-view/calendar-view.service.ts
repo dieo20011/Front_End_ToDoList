@@ -13,7 +13,7 @@ export class CalendarViewApiService {
     return this._http.get<ApiResponse<never>>(this._base + '/api/todo/get/' + id + '?status=' + status);
   }
 
-  public deleteTask(id: number) {
+  public deleteTask(id: string) {
     return this._http.delete<ApiResponse<never>>(this._base + '/api/todo/delete/' + id);
   }
 
