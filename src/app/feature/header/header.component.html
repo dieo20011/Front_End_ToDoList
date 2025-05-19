@@ -12,10 +12,10 @@
             <nz-tab>
                 <a *nzTabLink nz-tab-link routerLink="/dashboard/calendar-self">Lịch cá nhân</a>
             </nz-tab>
-            <nz-tab>
+            <!-- <nz-tab>
                 <a *nzTabLink nz-tab-link routerLink="/dashboard/news">Tin tức</a>
-            </nz-tab>
-            <nz-tab>
+            </nz-tab> -->
+            <nz-tab *ngIf="isAdmin()">
                 <a *nzTabLink nz-tab-link routerLink="/dashboard/holiday">Quản lý ngày nghỉ</a>
             </nz-tab>
         </nz-tabset>

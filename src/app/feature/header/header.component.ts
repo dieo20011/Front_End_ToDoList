@@ -34,6 +34,7 @@ import { NzTabComponent, NzTabLinkDirective, NzTabsModule } from 'ng-zorro-antd/
 export class HeaderComponent implements OnInit {
   tokenDetails: any;
   userName = signal('');
+  isAdmin = signal(false);
   constructor(
     private readonly _tokenSvc: TokenDecodeService,
     private readonly _notification: NzNotificationService,
@@ -52,7 +53,10 @@ export class HeaderComponent implements OnInit {
     if(this.tokenDetails?.userId) {
       this._authSvc.getMe(this.tokenDetails?.userId).subscribe((resp) => {
         if(resp.status) {
-          this.userName.set(resp.data.fullname)
+          this.userName.set(resp.data.fullname);
+          if(resp.data.email === "phamduyluan102001@gmail.com") {
+            this.isAdmin.set(true);
+          }
         }
       })
     }
