@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'app-read-more',
@@ -7,21 +7,19 @@ import { Component, Input } from '@angular/core';
   templateUrl: './read-more.component.html',
   styleUrl: './read-more.component.scss'
 })
-export class ReadMoreComponent {
+export class ReadMoreComponent implements OnChanges {
+  @Input() value: string = '';
+  @Input() length: number = 100;
+
+  shortContent: string = '';
   isCollapsed = true;
+  showReadMore = false;
 
-  @Input() value = '';
-  @Input() length = 75;
-
-  public shortContent = '';
-  public showReadMore = false;
-
-  ngOnInit(): void {
-    this.showReadMore = this.value && this.value.length > this.length ? true : false;
-    if (this.showReadMore) {
-      this.shortContent = this.value.slice(0, this.length) + '...';
-    } else {
-      this.shortContent = this.value;
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['value']) {
+      this.shortContent = this.value?.slice(0, this.length) ?? '';
+      this.showReadMore = (this.value?.length ?? 0) > this.length;
+      this.isCollapsed = true;
     }
   }
 }

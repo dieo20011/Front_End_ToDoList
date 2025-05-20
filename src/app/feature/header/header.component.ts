@@ -8,7 +8,7 @@ import {
   NzDropDownDirective,
   NzDropdownMenuComponent,
 } from 'ng-zorro-antd/dropdown';
-import { Router, RouterLink } from '@angular/router';
+import { Router, RouterLink, NavigationEnd } from '@angular/router';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
 import { UserUpdateInfoComponent } from '../user-update-info/user-update-info.component';
@@ -35,6 +35,7 @@ export class HeaderComponent implements OnInit {
   tokenDetails: any;
   userName = signal('');
   isAdmin = signal(false);
+  selectedIndex = 0;
   constructor(
     private readonly _tokenSvc: TokenDecodeService,
     private readonly _notification: NzNotificationService,
@@ -44,6 +45,15 @@ export class HeaderComponent implements OnInit {
   ) {}
   ngOnInit(): void {
     this.getMe();
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        if (this.router.url.includes('/dashboard/calendar-self')) {
+          this.selectedIndex = 0;
+        } else if (this.router.url.includes('/dashboard/holiday')) {
+          this.selectedIndex = 1;
+        }
+      }
+    });
   }
 
   getMe() {

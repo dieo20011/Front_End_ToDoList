@@ -26,7 +26,7 @@ export enum ToDoStatus {
 }
 
 export const ToDoList = [
-  { value: ToDoStatus.Pending, label: 'Chưa làm' },
-  { value: ToDoStatus.InProgress, label: 'Đang tiến hành' },
-  { value: ToDoStatus.Done, label: 'Hoàn thành' },
+  { value: ToDoStatus.Pending, label: 'Pending' },
+  { value: ToDoStatus.InProgress, label: 'In Progress' },
+  { value: ToDoStatus.Done, label: 'Done' },
 ];
