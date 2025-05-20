@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, ChangeDetectorRef } from '@angular/core';
 import { AuthApiService } from '../../../core/service/auth.service';
 import { TokenDecodeService } from '../../../core/service/token.service';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -35,22 +35,23 @@ export class HeaderComponent implements OnInit {
   tokenDetails: any;
   userName = signal('');
   isAdmin = signal(false);
-  selectedIndex = 0;
+  selectedIndex = signal(0);
   constructor(
     private readonly _tokenSvc: TokenDecodeService,
     private readonly _notification: NzNotificationService,
     private readonly router: Router,
     private readonly _nzModalSvc: NzModalService,
-    private readonly _authSvc: AuthApiService
+    private readonly _authSvc: AuthApiService,
+    private readonly _cdr: ChangeDetectorRef
   ) {}
   ngOnInit(): void {
     this.getMe();
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         if (this.router.url.includes('/dashboard/calendar-self')) {
-          this.selectedIndex = 0;
+          this.selectedIndex.set(0);
         } else if (this.router.url.includes('/dashboard/holiday')) {
-          this.selectedIndex = 1;
+          this.selectedIndex.set(1);
         }
       }
     });
@@ -61,12 +62,20 @@ export class HeaderComponent implements OnInit {
       this._authSvc.getToken()
     );
     if(this.tokenDetails?.userId) {
-      this._authSvc.getMe(this.tokenDetails?.userId).subscribe((resp) => {
-        if(resp.status) {
-          this.userName.set(resp.data.fullname);
-          if(resp.data.email === "phamduyluan102001@gmail.com") {
-            this.isAdmin.set(true);
+      this._authSvc.getMe(this.tokenDetails?.userId).subscribe({
+        next: (resp) => {
+          if(resp.status) {
+            this.userName.set(resp.data.fullname);
+            if(resp.data.email === "phamduyluan102001@gmail.com") {
+              this.isAdmin.set(true);
+            }
           }
+        },
+        error: (error) => {
+          this._notification.error('Error when getting data', '');
+        },
+        complete: () => {
+          this._cdr.detectChanges();
         }
       })
     }
