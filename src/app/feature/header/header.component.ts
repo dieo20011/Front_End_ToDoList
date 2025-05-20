@@ -72,7 +72,7 @@ export class HeaderComponent implements OnInit {
     });
     modalRef.afterClose.subscribe((reload: boolean) => {
       if (!reload) return;
-      this._notification.success('Cập nhật thông tin thành công', '');
+      this._notification.success('Update information successfully', '');
       this.getMe();
     });
   }
@@ -87,7 +87,7 @@ export class HeaderComponent implements OnInit {
     });
     modalRef.afterClose.subscribe((reload: boolean) => {
       if (!reload) return;
-      this._notification.success('Cập nhật mật khẩu thành công', '');
+      this._notification.success('Update password successfully', '');
       this.getMe();
     });
   }

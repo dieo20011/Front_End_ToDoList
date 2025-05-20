@@ -1,17 +1,17 @@
 <div class="bg-white p-4  px-6 mt-4">
   <div class="mt-4 flex justify-between items-center">
-    <h1 class="text-xl font-extrabold">Thông tin các ngày nghỉ</h1>
+    <h1 class="text-xl font-extrabold">Holiday information</h1>
     <button nz-button nzType="primary" (click)="onAddHoliday()">
         <i nz-icon nzType="plus" nzTheme="outline"></i>
-        Thêm ngày nghỉ
+        Add holiday
       </button>
   </div>
   <div class="mt-2">
     <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
-        <input type="text" nz-input placeholder="Tên ngày nghỉ" [(ngModel)]="keyword" (keyup.enter)="getHolidayData()"/>
+        <input type="text" nz-input placeholder="Holiday name" [(ngModel)]="keyword" (keyup.enter)="getHolidayData()"/>
       </nz-input-group>
       <ng-template #suffixIconButton>
-        <button nz-button nzType="primary" nzSearch aria-label="Tìm kiếm"><nz-icon nzType="search" (click)="getHolidayData()"/></button>
+        <button nz-button nzType="primary" nzSearch aria-label="Search"><nz-icon nzType="search" (click)="getHolidayData()"/></button>
       </ng-template>
   </div>
  <div class="mt-5">
@@ -31,24 +31,24 @@
     [nzFrontPagination]="false"
   >
     <ng-template #totalTpl let-total let-range="range">
-      <span>{{ range[0] }} - {{ range[1] }} của {{ total }} {{ "ngày nghỉ" }}</span>
+      <span>{{ range[0] }} - {{ range[1] }} of {{ total }} {{ "holidays" }}</span>
     </ng-template>
     <thead>
       <tr>
         <th nzWidth="15%" id="title">
-          {{ "Tên ngày nghỉ" }}
+          {{ "Holiday name" }}
         </th>
         <th nzWidth="15%" id="fromDate">
-          {{ "Ngày bắt đầu" }}
+          {{ "Start date" }}
         </th>
         <th nzWidth="15%" id="toDate">
-          {{ "Ngày kết thúc" }}
+          {{ "End date" }}
         </th>
         <th nzWidth="38%" id="description">
-          {{ "Mô tả" }}
+          {{ "Description" }}
         </th>
         <th nzWidth="10%" id="status">
-          {{ "Ngày lễ hằng năm" }}
+          {{ "Annual holiday" }}
         </th>
         <th class="tw-max-w-[150px] tw-text-center" id="action"></th>
       </tr>
@@ -74,7 +74,7 @@
             nzDanger
             (click)="deleteTask(holiday.id, $event)"
           >
-            Xóa
+            Delete
           </button>
         </td>
       </tr>

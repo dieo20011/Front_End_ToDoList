@@ -10,13 +10,13 @@
       <div>
         <nz-tabset nzLinkRouter class="h-[50px]">
             <nz-tab>
-                <a *nzTabLink nz-tab-link routerLink="/dashboard/calendar-self">Lịch cá nhân</a>
+                <a *nzTabLink nz-tab-link routerLink="/dashboard/calendar-self">Personal calendar</a>
             </nz-tab>
             <!-- <nz-tab>
                 <a *nzTabLink nz-tab-link routerLink="/dashboard/news">Tin tức</a>
             </nz-tab> -->
             <nz-tab *ngIf="isAdmin()">
-                <a *nzTabLink nz-tab-link routerLink="/dashboard/holiday">Quản lý ngày nghỉ</a>
+                <a *nzTabLink nz-tab-link routerLink="/dashboard/holiday">Holiday management</a>
             </nz-tab>
         </nz-tabset>
       </div>
@@ -30,15 +30,15 @@
               <ul nz-menu class="w-48">
                   <li nz-menu-item (click)="openPopUpEditInformation()" class="p-4 hover:bg-gray-100"> 
                       <span nz-icon nzType="user" nzTheme="outline" class="text-green-500 mr-2"></span>
-                      Thông tin cá nhân
+                      Personal information
                   </li>
                   <li nz-menu-item (click)="openPopUpChangePassword()" class="p-4 hover:bg-gray-100"> 
                       <span nz-icon nzType="key" nzTheme="outline" class="text-green-500 mr-2"></span>
-                      Đặt lại mật khẩu
+                      Reset password
                   </li>
                   <li nz-menu-item (click)="logOut()" class="p-4 hover:bg-gray-100">
                       <span nz-icon nzType="logout" nzTheme="outline" class="text-red-500 mr-2"></span>
-                      Đăng xuất
+                      Logout
                   </li>
               </ul>
           </nz-dropdown-menu>

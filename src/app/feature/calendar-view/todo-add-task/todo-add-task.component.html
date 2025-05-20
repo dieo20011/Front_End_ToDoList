@@ -1,37 +1,37 @@
 <div>
     @if (data.data) {
-      <h2 class="text-xl font-medium">Chỉnh sửa task</h2>
+      <h2 class="text-xl font-medium">Edit task</h2>
     } @else {
-      <h2 class="text-xl font-medium">Thêm mới task</h2>
+      <h2 class="text-xl font-medium">Add new task</h2>
     }
     <form nz-form [formGroup]="form">
       <nz-form-item class="no-margin">
-        <nz-form-label nzSpan="6" nzRequired nzFor="name" class="font-medium">Tên task</nz-form-label>
+        <nz-form-label nzSpan="6" nzRequired nzFor="name" class="font-medium">Task name</nz-form-label>
         <nz-form-control [nzErrorTip]="titleValueTpl">
-          <input nz-input formControlName="title" id="title" class="tw-w-full" placeholder="Tên task" />
+          <input nz-input formControlName="title" id="title" class="tw-w-full" placeholder="Task name" />
           <ng-template #titleValueTpl let-control>
-            <ng-container *ngIf="!form.get('title')?.value">{{ 'Trường này bắt buộc' }}</ng-container>
-            <ng-container *ngIf="form.get('title')?.hasError('whitespace')">{{ 'Vui lòng nhập tên task hợp lệ' }}</ng-container>
-            <ng-container *ngIf="form.get('title')?.hasError('maxlength')">{{ 'Không được quá 50 ký tự' }}</ng-container>
+            <ng-container *ngIf="!form.get('title')?.value">{{ 'This field is required' }}</ng-container>
+            <ng-container *ngIf="form.get('title')?.hasError('whitespace')">{{ 'Please enter a valid task name' }}</ng-container>
+            <ng-container *ngIf="form.get('title')?.hasError('maxlength')">{{ 'Cannot exceed 50 characters' }}</ng-container>
           </ng-template>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item class="no-margin">
-        <nz-form-label nzRequired nzSpan="6" nzFor="fromDate" class="font-medium"> Ngày thực hiện </nz-form-label>
+        <nz-form-label nzRequired nzSpan="6" nzFor="fromDate" class="font-medium"> Execution date </nz-form-label>
         <nz-form-control [nzErrorTip]="fromDateValueTpl">
           <nz-date-picker
-            [nzPlaceHolder]="'Ngày thực hiện'"
+            [nzPlaceHolder]="'Execution date'"
             formControlName="fromDate"
             nzFormat="dd/MM/yyyy"
             class="w-full"></nz-date-picker>
           <ng-template #fromDateValueTpl let-control>
-            <ng-container *ngIf="!form.get('fromDate')?.value">{{ 'Trường này bắt buộc' }}</ng-container>
-            <ng-container *ngIf="form.get('fromDate')?.hasError('dateRange')">{{ 'Từ ngày phải nhỏ hơn đến ngày' }}</ng-container>
+            <ng-container *ngIf="!form.get('fromDate')?.value">{{ 'This field is required' }}</ng-container>
+            <ng-container *ngIf="form.get('fromDate')?.hasError('dateRange')">{{ 'The start date must be before the end date' }}</ng-container>
           </ng-template>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item class="no-margin">
-        <nz-form-label nzSpan="6" nzRequired nzFor="reviewUserId" class="tw-font-medium">Trạng thái</nz-form-label>
+        <nz-form-label nzSpan="6" nzRequired nzFor="reviewUserId" class="tw-font-medium">Status</nz-form-label>
         <nz-form-control [nzErrorTip]="statusValueTpl">
           <nz-select
             nzAllowClear
@@ -42,22 +42,22 @@
             <nz-option *ngFor="let todo of todoList" [nzLabel]="todo.label" [nzValue]="todo.value"></nz-option>
           </nz-select>
           <ng-template #statusValueTpl let-control>
-            <ng-container *ngIf="!form.get('status')?.value">{{ 'Trường này bắt buộc' }}</ng-container>
+            <ng-container *ngIf="!form.get('status')?.value">{{ 'This field is required' }}</ng-container>
           </ng-template>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item class="no-margin">
-        <nz-form-label nzSpan="6" nzRequired nzFor="name" class="font-medium">Mô tả</nz-form-label>
+        <nz-form-label nzSpan="6" nzRequired nzFor="name" class="font-medium">Description</nz-form-label>
         <nz-form-control [nzErrorTip]="descriptionValueTpl">
-            <textarea nz-input formControlName="description" placeholder="Mô tả" class="tw-w-full" [nzAutosize]="{ minRows: 2, maxRows: 6 }"></textarea>
+            <textarea nz-input formControlName="description" placeholder="Description" class="tw-w-full" [nzAutosize]="{ minRows: 2, maxRows: 6 }"></textarea>
           <ng-template #descriptionValueTpl let-control>
-            <ng-container *ngIf="!form.get('description')?.value">{{ 'Trường này bắt buộc' }}</ng-container>
-            <ng-container *ngIf="form.get('description')?.hasError('whitespace')">{{ 'Vui lòng nhập mô tả hợp lệ' }}</ng-container>
+            <ng-container *ngIf="!form.get('description')?.value">{{ 'This field is required' }}</ng-container>
+            <ng-container *ngIf="form.get('description')?.hasError('whitespace')">{{ 'Please enter a valid description' }}</ng-container>
           </ng-template>
         </nz-form-control>
       </nz-form-item>
       <div class="flex justify-end mt-4 gap-2">
-        <button type="button" nzType="default" (click)="onDestroyModal()">Hủy</button>
+        <button type="button" nzType="default" (click)="onDestroyModal()">Cancel</button>
         <button
           type="button"
           nz-button
@@ -65,7 +65,7 @@
           [disabled]="form.invalid"
           (click)="create()"
           >
-          Gửi
+          Send
         </button>
       </div>
     </form>

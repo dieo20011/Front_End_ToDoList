@@ -6,7 +6,7 @@
           [nzMaxTagCount]="3"
           class="w-[210px]"
           [(ngModel)]="viewDataType"
-          [nzPlaceHolder]="'Xem thông tin dạng'"
+          [nzPlaceHolder]="'View type'"
           (ngModelChange)="changeViewDataType($event)"
         >
           <nz-option
@@ -69,12 +69,12 @@
               </button>
             </div>
             <button nz-button nzType="primary" (click)="openAddTask()">
-              Thêm task
+              Add task
             </button>
             <nz-select
             class="w-[210px]"
             [(ngModel)]="statusToDo"
-            [nzPlaceHolder]="'Xem thông tin dạng'"
+            [nzPlaceHolder]="'View type'"
             (ngModelChange)="getAllToDoListData()"
           >
             <nz-option
@@ -93,7 +93,7 @@
               }"
               (click)="viewCalendarType = 2"
             >
-              Tuần
+              Week
             </button>
             <button
               class="calendar-btn cursor-pointer text-white border-outline-none py-2.5 px-5 rounded-md text-sm font-bold transition-all duration-300"
@@ -103,7 +103,7 @@
               }"
               (click)="viewCalendarType = 3"
             >
-              Tháng
+              Month
             </button>
           </div>
         </div>
@@ -269,7 +269,7 @@
         </ng-container>
         <ng-container *ngIf="viewDataType === 0">
           <div>
-            <h1 class="text-xl font-extrabold">Thông tin danh sách task</h1>
+            <h1 class="text-xl font-extrabold">Task list information</h1>
           </div>
           <nz-table
             [nzData]="dataSource"
@@ -282,26 +282,26 @@
           >
             <ng-template #totalTpl let-total let-range="range">
               <span
-                >{{ range[0] }} - {{ range[1] }} của {{ total }}
-                {{ "đơn" }}</span
+                >{{ range[0] }} - {{ range[1] }} of {{ total }}
+                {{ "tasks" }}</span
               >
             </ng-template>
             <thead>
               <tr>
                 <th nzWidth="15%" id="date">
-                  {{ "Ngày thực hiện task" }}
+                  {{ "Task execution date" }}
                 </th>
                 <th nzWidth="30%" id="title">
-                  {{ "Tiêu đề task" }}
+                  {{ "Task title" }}
                 </th>
                 <th
                   nzWidth="38%"
                   id="description"
                 >
-                  {{ "Mô tả task" }}
+                  {{ "Task description" }}
                 </th>
                 <th nzWidth="10%" id="status">
-                  {{ "Trạng thái task" }}
+                  {{ "Task status" }}
                 </th>
                 <th class="tw-max-w-[150px]" id="action"></th>
               </tr>
@@ -332,7 +332,7 @@
                     nzDanger
                     (click)="deleteTask(calendar.id, $event)"
                   >
-                    Xóa
+                    Delete
                   </button>
                 </td>
               </tr>

@@ -44,13 +44,13 @@ export class CalendarViewComponent implements OnInit {
   tokenDetails: any;
   currentDate: Date = new Date();
   weeks: string[] = [
-    'Thứ hai',
-    'Thứ ba',
-    'Thứ tư',
-    'Thứ năm',
-    'Thứ sáu',
-    'Thứ bảy',
-    'Chủ nhật',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+    'Sunday',
   ];
   days: IDayListData[] = [];
   viewCalendarType = 3;
@@ -65,19 +65,19 @@ export class CalendarViewComponent implements OnInit {
   viewLeaveTypeList = [
     {
       value: 0,
-      label: 'Xem thông tin dạng bảng',
+      label: 'Table view',
     },
     {
       value: 1,
-      label: 'Xem thông tin dạng lịch',
+      label: 'Calendar view',
     },
   ];
-  statusToDo: number = 0;
+  statusToDo: number = 3;
   ToDoStatusList = [
-    { value: 3, label: 'Tất cả' },
-    { value: 0, label: 'Chưa làm' },
-    { value: 1, label: 'Đang tiến hành' },
-    { value: 2, label: 'Hoàn thành' },
+    { value: 3, label: 'All' },
+    { value: 0, label: 'Not started' },
+    { value: 1, label: 'In progress' },
+    { value: 2, label: 'Completed' },
   ];
   constructor(
     private readonly _calendarSvc: CalendarViewApiService,
@@ -117,18 +117,18 @@ export class CalendarViewComponent implements OnInit {
   }
   generateCalendar(currentDate: Date) {
     const months = [
-      'Tháng 1',
-      'Tháng 2',
-      'Tháng 3',
-      'Tháng 4',
-      'Tháng 5',
-      'Tháng 6',
-      'Tháng 7',
-      'Tháng 8',
-      'Tháng 9',
-      'Tháng 10',
-      'Tháng 11',
-      'Tháng 12',
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
     ];
 
     const firstDayOfMonth = new Date(
@@ -182,7 +182,7 @@ export class CalendarViewComponent implements OnInit {
       (currentDate.getTime() - startOfYear.getTime()) / (24 * 60 * 60 * 1000)
     );
     const weekNumber = Math.ceil((daysBetween + 1) / 7);
-    this.weekTitle = `Tuần ${weekNumber}`;
+    this.weekTitle = `Week ${weekNumber}`;
     //
     const fromDate = new Date(this.days[0].date);
     const endDate = new Date(this.days[this.days.length - 1].date);
@@ -289,7 +289,7 @@ export class CalendarViewComponent implements OnInit {
     if (dayOfWeek === 6 || dayOfWeek === 5) {
       return [
         {
-          title: 'Cuối tuần',
+          title: 'Weekend',
           fromDate: normalizedDate.toISOString(),
           toDate: normalizedDate.toISOString(),
           avatar: '',
@@ -351,7 +351,7 @@ export class CalendarViewComponent implements OnInit {
     });
     modalRef.afterClose.subscribe((reload: boolean) => {
       if (!reload) return;
-      this._notification.success('Tạo task thành công', '');
+      this._notification.success('Task created successfully', '');
       this.getAllToDoListData();
     });
   }
@@ -366,7 +366,7 @@ export class CalendarViewComponent implements OnInit {
     });
     modalRef.afterClose.subscribe((reload: boolean) => {
       if (!reload) return;
-      this._notification.success('Sửa task thành công', '');
+      this._notification.success('Task updated successfully', '');
       this.getAllToDoListData();
     });
   }
@@ -376,14 +376,14 @@ export class CalendarViewComponent implements OnInit {
     const modalRef = this._nzModalSvc.create({
       nzContent: PopUpConfirmComponent,
       nzWidth: 320,
-      nzData: { title: `Bạn có chắc chắn muốn xóa?` },
+      nzData: { title: `Are you sure you want to delete?` },
       nzFooter: null,
     });
     modalRef.componentInstance!.clickSubmit.subscribe(() => {
       this._calendarSvc.deleteTask((id)).subscribe((resp) => {
         if (resp.status) {
           modalRef.destroy();
-          this._notification.success('Xóa task thành công', '');
+          this._notification.success('Task deleted successfully', '');
           this.getAllToDoListData();
         }
       });

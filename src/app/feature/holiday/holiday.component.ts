@@ -82,7 +82,7 @@ export class HolidayComponent implements OnInit {
             }
           },
           error: (error) => {
-            this._notification.error('Lỗi khi lấy dữ liệu', '');
+            this._notification.error('Error when getting data', '');
           },
           complete: () => {
             this._cdr.detectChanges();
@@ -101,7 +101,7 @@ export class HolidayComponent implements OnInit {
     });
     modalRef.afterClose.subscribe((reload: boolean) => {
       if (!reload) return;
-      this._notification.success('Tạo `task` thành công', '');
+      this._notification.success('Create holiday successfully', '');
       this.getHolidayData();
     });
   }
@@ -116,7 +116,7 @@ export class HolidayComponent implements OnInit {
     });
     modalRef.afterClose.subscribe((reload: boolean) => {
       if (!reload) return;
-      this._notification.success('Sửa ngày lễ thành công', '');
+      this._notification.success('Update holiday successfully', '');
       this.getHolidayData();
     });
   }
@@ -126,14 +126,14 @@ export class HolidayComponent implements OnInit {
     const modalRef = this._nzModalSvc.create({
       nzContent: PopUpConfirmComponent,
       nzWidth: 320,
-      nzData: { title: `Bạn có chắc chắn muốn xóa?` },
+      nzData: { title: `Are you sure you want to delete?` },
       nzFooter: null,
     });
     modalRef.componentInstance!.clickSubmit.subscribe(() => {
       this.holidayService.deleteHoliday(this.tokenDetails?.userId, id).subscribe((resp) => {
         if (resp.status) {
           modalRef.destroy();
-          this._notification.success('Xóa task thành công', '');
+          this._notification.success('Delete holiday successfully', '');
           this.getHolidayData();
         }
       });
@@ -158,7 +158,7 @@ export class HolidayComponent implements OnInit {
     holiday.isAnnualHoliday = !holiday.isAnnualHoliday;
     this.holidayService.updateAnnualHoliday(this.tokenDetails?.userId, holiday.id, holiday.isAnnualHoliday).subscribe((resp) => {
       if (resp.status) {
-        this._notification.success('Cập nhật ngày lễ thành công', '');
+        this._notification.success('Update holiday successfully', '');
         this.getHolidayData();
       }
     });
