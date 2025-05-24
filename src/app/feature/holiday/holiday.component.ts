@@ -156,7 +156,11 @@ export class HolidayComponent implements OnInit {
   public onChangeAnnualHoliday(holiday: IHoliday, event: Event) {
     event.stopPropagation();
     holiday.isAnnualHoliday = !holiday.isAnnualHoliday;
-    this.holidayService.updateAnnualHoliday(this.tokenDetails?.userId, holiday.id, holiday.isAnnualHoliday).subscribe((resp) => {
+    const request = {
+      ...holiday,
+      isAnnualHoliday: holiday.isAnnualHoliday
+    }
+    this.holidayService.updateHoliday(holiday.id, request).subscribe((resp) => {
       if (resp.status) {
         this._notification.success('Update holiday successfully', '');
         this.getHolidayData();

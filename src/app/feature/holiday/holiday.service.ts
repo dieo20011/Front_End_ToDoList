@@ -23,7 +23,6 @@ export class HolidayService {
     );
   }
   
-
   public getDetailHoLidayData(userId: string, holidayId: number) {
     return this.httpClient.get<ApiResponse<IHolidayRequest>>(this._base + '/api/holiday/get/detail/' + userId + '/' + holidayId);
   }
@@ -34,10 +33,6 @@ export class HolidayService {
 
   public updateHoliday(id: number, data: IHolidayRequest) {
     return this.httpClient.put<ApiResponse<never>>(this._base + '/api/holiday/update/' + id, data);
-  }
-
-  public updateAnnualHoliday(userId: string, holidayId: number, isAnnualHoliday: boolean) {
-    return this.httpClient.put<ApiResponse<never>>(this._base + '/api/holiday/update-status/' + userId  + '/' + holidayId, isAnnualHoliday);
   }
 
   public deleteHoliday(userId: number, holidayId: number) {
