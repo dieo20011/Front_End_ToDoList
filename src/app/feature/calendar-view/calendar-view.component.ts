@@ -75,7 +75,7 @@ export class CalendarViewComponent implements OnInit {
   statusToDo: number = 3;
   ToDoStatusList = [
     { value: 3, label: 'All' },
-    { value: 0, label: 'Not started' },
+    { value: 0, label: 'Pending' },
     { value: 1, label: 'In progress' },
     { value: 2, label: 'Completed' },
   ];

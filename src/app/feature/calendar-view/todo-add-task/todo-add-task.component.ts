@@ -66,16 +66,16 @@ export class TodoAddTaskComponent implements OnInit {
       toDate: new FormControl(''),
       status: new FormControl(ToDoStatus.Pending, [Validators.required]),
       description: new FormControl('', [Validators.required, whitespaceValidator]),
-    },
-    {
-      validators: [DateValidatorV2.dateRange('fromDate', 'toDate')]
     }
   );
   }
 
   ngOnInit(): void {
+    const today = new Date();
     if (this.data?.data) {
       this.form.patchValue(this.data.data);
+    } else {
+      this.form.get('fromDate')?.patchValue(today);
     }
   }
 
