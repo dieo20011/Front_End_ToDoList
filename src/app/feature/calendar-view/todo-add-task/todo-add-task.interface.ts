@@ -5,4 +5,5 @@ export interface ToDoAddRequest {
     fromDate: string;
     toDate: string;
     userId: string;
+    isUrgent: boolean;
 }

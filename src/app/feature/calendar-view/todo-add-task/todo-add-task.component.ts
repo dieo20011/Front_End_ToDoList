@@ -24,6 +24,7 @@ import { whitespaceValidator } from '../../../../shared/util/white-space.validat
 import { removeAccentedChars } from '../../../../shared/util/string-helpers';
 import { TodoTaskApiService } from './todo-add-task.service';
 import { DateValidatorV2 } from '../../../../shared/util/date.validator';
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 
 @Component({
   selector: 'app-todo-add-task',
@@ -38,6 +39,7 @@ import { DateValidatorV2 } from '../../../../shared/util/date.validator';
     NzSelectModule,
     NzButtonModule,
     NzDatePickerModule,
+    NzCheckboxModule
   ],
   providers: [TodoTaskApiService, DatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -66,6 +68,7 @@ export class TodoAddTaskComponent implements OnInit {
       toDate: new FormControl(''),
       status: new FormControl(ToDoStatus.Pending, [Validators.required]),
       description: new FormControl('', [Validators.required, whitespaceValidator]),
+      isUrgent: new FormControl(false, [Validators.required])
     },
     {
       validators: [DateValidatorV2.dateRange('fromDate', 'toDate')]

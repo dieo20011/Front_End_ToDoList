@@ -45,6 +45,29 @@
         </ng-template>
       </nz-form-control>
     </nz-form-item>
+    <nz-form-item class="no-margin">
+      <nz-form-label nzSpan="6" nzRequired nzFor="email" class="font-medium"
+        >Email</nz-form-label
+      >
+      <nz-form-control [nzErrorTip]="fullNameValueTpl">
+        <input
+          nz-input
+          formControlName="email"
+          id="title"
+          class="tw-w-full"
+          type="email"
+          placeholder="Email"
+        />
+        <ng-template #fullNameValueTpl let-control>
+          <ng-container *ngIf="!form.get('email')?.value">{{
+            "This field is required"
+          }}</ng-container>
+          <ng-container *ngIf="form.get('email')?.hasError('whitespace')">{{
+            "Please enter a valid name"
+          }}</ng-container>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
     <div class="flex justify-end mt-4 gap-2">
       <button nz-button nzType="default" (click)="onDestroyModal()">Cancel</button>
       <button

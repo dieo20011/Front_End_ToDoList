@@ -44,12 +44,11 @@
         </nz-form-control>
       </nz-form-item>
       <nz-form-item class="no-margin">
-        <nz-form-label nzSpan="6" nzRequired nzFor="name" class="font-medium">Is Fixed Holiday</nz-form-label>
+        <nz-form-label nzSpan="6" nzRequired nzFor="name" class="font-medium">Is Annual Holiday</nz-form-label>
         <nz-form-control [nzErrorTip]="descriptionValueTpl">
           <label nz-checkbox formControlName="isAnnualHoliday" class="tw-font-medium"></label>
           <ng-template #descriptionValueTpl let-control>
             <ng-container *ngIf="!form.get('description')?.value">{{ 'This field is required' }}</ng-container>
-            <ng-container *ngIf="form.get('description')?.hasError('whitespace')">{{ 'Please enter a valid description' }}</ng-container>
           </ng-template>
         </nz-form-control>
       </nz-form-item>

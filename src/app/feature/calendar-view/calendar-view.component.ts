@@ -101,7 +101,8 @@ export class CalendarViewComponent implements OnInit {
         .getAllToDoListData(this.tokenDetails?.userId, this.statusToDo)
         .subscribe((resp) => {
           if (resp.status) {
-            this.dataSource = resp.data;
+            // Sort the entire data source by priority
+            this.dataSource = this.sortEventsByPriority(resp.data);
           }
         });
       this._calendarSvc.getHolidayData(this.tokenDetails?.userId).subscribe((resp) => {
@@ -252,8 +253,8 @@ export class CalendarViewComponent implements OnInit {
     });
 
     if (events.length > 0) {
-      // If there are events, show them (even on weekends)
-      return events;
+      // Sort events with priority: Urgent > Status > Title
+      return this.sortEventsByPriority(events);
     }
 
     // 2. Check for holiday
@@ -396,5 +397,33 @@ export class CalendarViewComponent implements OnInit {
 
   public click(event: Event) {
     event.stopPropagation();
+  }
+
+  /**
+   * Sort events by priority: Urgent tasks first, then by status, then by title
+   */
+  private sortEventsByPriority(events: CalendarRespone[]): CalendarRespone[] {
+    if (!events || events.length === 0) {
+      return events;
+    }
+
+    return [...events].sort((a, b) => {
+      // First priority: isUrgent (urgent tasks come first)
+      if (a.isUrgent && !b.isUrgent) return -1;
+      if (!a.isUrgent && b.isUrgent) return 1;
+      
+      // Second priority: status (Pending > InProgress > Done)
+      if (a.status !== b.status) {
+        const statusPriority = { 
+          [ToDoStatus.Pending]: 0, 
+          [ToDoStatus.InProgress]: 1, 
+          [ToDoStatus.Done]: 2 
+        };
+        return statusPriority[a.status] - statusPriority[b.status];
+      }
+      
+      // Third priority: title alphabetically
+      return a.title.localeCompare(b.title);
+    });
   }
 }

@@ -44,7 +44,7 @@ export class UserUpdateInfoComponent implements OnInit {
     this.form = this.fb.group({
       fullname: ['', [Validators.required, whitespaceValidator]],
       username: ['', [Validators.required, whitespaceValidator]],
-      email: ['', [Validators.required, whitespaceValidator]],
+      email: ['', [Validators.required, whitespaceValidator, Validators.email]],
     });
   }
   ngOnInit(): void {

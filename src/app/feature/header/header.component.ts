@@ -36,6 +36,7 @@ export class HeaderComponent implements OnInit {
   userName = signal('');
   isAdmin = signal(false);
   selectedIndex = signal(0);
+  isLoading = signal(false);
   constructor(
     private readonly _tokenSvc: TokenDecodeService,
     private readonly _notification: NzNotificationService,
@@ -46,18 +47,10 @@ export class HeaderComponent implements OnInit {
   ) {}
   ngOnInit(): void {
     this.getMe();
-    this.router.events.subscribe(event => {
-      if (event instanceof NavigationEnd) {
-        if (this.router.url.includes('/dashboard/calendar-self')) {
-          this.selectedIndex.set(0);
-        } else if (this.router.url.includes('/dashboard/holiday')) {
-          this.selectedIndex.set(1);
-        }
-      }
-    });
+   
   }
-
   getMe() {
+    this.isLoading.set(true);
     this.tokenDetails = this._tokenSvc.getTokenDetails(
       this._authSvc.getToken()
     );
@@ -76,9 +69,23 @@ export class HeaderComponent implements OnInit {
         },
         complete: () => {
           this._cdr.detectChanges();
+          this.getPermission();
+          this.isLoading.set(false);
         }
       })
     }
+  }
+
+  getPermission() {
+     this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        if (this.router.url.includes('/dashboard/calendar-self')) {
+          this.selectedIndex.set(0);
+        } else if (this.router.url.includes('/dashboard/holiday')) {
+          this.selectedIndex.set(1);
+        }
+      }
+    });       
   }
 
   openPopUpEditInformation() {

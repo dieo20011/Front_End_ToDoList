@@ -17,6 +17,7 @@ export interface CalendarRespone {
   toDate: string;
   isHoliday?: boolean;
   status: ToDoStatus;
+  isUrgent?: boolean;
 }
 
 export enum ToDoStatus {

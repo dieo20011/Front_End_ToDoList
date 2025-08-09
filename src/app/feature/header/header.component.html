@@ -8,14 +8,14 @@
       </div>
 
       <div>
-        <nz-tabset nzLinkRouter class="h-[50px]" [nzSelectedIndex]="selectedIndex()">
+        <nz-tabset nzLinkRouter class="h-[50px]" [nzSelectedIndex]="selectedIndex()" *ngIf="!isLoading()">
             <nz-tab>
                 <a *nzTabLink nz-tab-link routerLink="/dashboard/calendar-self">Personal calendar</a>
             </nz-tab>
             <!-- <nz-tab>
                 <a *nzTabLink nz-tab-link routerLink="/dashboard/news">Tin tức</a>
             </nz-tab> -->
-            <nz-tab *ngIf="isAdmin()">
+            <nz-tab>
                 <a *nzTabLink nz-tab-link routerLink="/dashboard/holiday">Holiday management</a>
             </nz-tab>
         </nz-tabset>

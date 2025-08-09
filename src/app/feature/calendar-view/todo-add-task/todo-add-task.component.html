@@ -47,6 +47,15 @@
         </nz-form-control>
       </nz-form-item>
       <nz-form-item class="no-margin">
+        <nz-form-label nzSpan="6" nzRequired nzFor="name" class="font-medium">Is Urgent</nz-form-label>
+        <nz-form-control [nzErrorTip]="descriptionValueTpl">
+          <label nz-checkbox formControlName="isUrgent" class="tw-font-medium"></label>
+          <ng-template #descriptionValueTpl let-control>
+            <ng-container *ngIf="!form.get('isUrgent')?.value">{{ 'This field is required' }}</ng-container>
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item class="no-margin">
         <nz-form-label nzSpan="6" nzRequired nzFor="name" class="font-medium">Description</nz-form-label>
         <nz-form-control [nzErrorTip]="descriptionValueTpl">
             <textarea nz-input formControlName="description" placeholder="Description" class="tw-w-full" [nzAutosize]="{ minRows: 2, maxRows: 6 }"></textarea>
