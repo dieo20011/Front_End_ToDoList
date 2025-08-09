@@ -77,8 +77,11 @@ export class TodoAddTaskComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const today = new Date();
     if (this.data?.data) {
       this.form.patchValue(this.data.data);
+    } else {
+      this.form.get('fromDate')?.patchValue(today);
     }
   }
 

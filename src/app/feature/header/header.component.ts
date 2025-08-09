@@ -36,7 +36,7 @@ export class HeaderComponent implements OnInit {
   userName = signal('');
   isAdmin = signal(false);
   selectedIndex = signal(0);
-  isLoading = signal(false);
+  loading = signal(false);
   constructor(
     private readonly _tokenSvc: TokenDecodeService,
     private readonly _notification: NzNotificationService,
@@ -50,10 +50,10 @@ export class HeaderComponent implements OnInit {
    
   }
   getMe() {
-    this.isLoading.set(true);
     this.tokenDetails = this._tokenSvc.getTokenDetails(
       this._authSvc.getToken()
     );
+    this.loading.set(true);
     if(this.tokenDetails?.userId) {
       this._authSvc.getMe(this.tokenDetails?.userId).subscribe({
         next: (resp) => {
@@ -68,9 +68,9 @@ export class HeaderComponent implements OnInit {
           this._notification.error('Error when getting data', '');
         },
         complete: () => {
+          this.loading.set(false);
           this._cdr.detectChanges();
           this.getPermission();
-          this.isLoading.set(false);
         }
       })
     }
