@@ -95,7 +95,7 @@ export class TodoAddTaskComponent implements OnInit {
     const data = {
       ...this.form.value,
       fromDate: this.formatDate(this.form.get('fromDate')?.value),
-      toDate: this.formatDate(this.form.get('fromDate')?.value),
+      toDate: this.form.get('toDate')?.value ? this.formatDate(this.form.get('toDate')?.value) : this.formatDate(this.form.get('fromDate')?.value),
       userId: this.data.userId ?? '',
     };
     if (!this.data?.data) {

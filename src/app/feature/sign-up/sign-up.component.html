@@ -19,10 +19,10 @@
             (blur)="onBlurFullname()"
           />
           <ng-template #fullnameValueTpl let-control>
-            <ng-container *ngIf="control?.hasError('required')">
+            <ng-container *ngIf="signupForm.get('fullname')?.hasError('required')">
               <p>Full name is required</p>
             </ng-container>
-            <ng-container *ngIf="control?.hasError('whitespace')">
+            <ng-container *ngIf="signupForm.get('fullname')?.hasError('whitespace')">
               <p>Please enter a valid name</p>
             </ng-container>
           </ng-template>
@@ -46,10 +46,10 @@
             (input)="removeLeadingWhitespace($event)"
           />
           <ng-template #usernameValueTpl let-control>
-            <ng-container *ngIf="control?.hasError('required')">
+            <ng-container *ngIf="signupForm.get('username')?.hasError('required')">
               <p>Username is required</p>
             </ng-container>
-            <ng-container *ngIf="control?.hasError('whitespace')">
+            <ng-container *ngIf="signupForm.get('username')?.hasError('whitespace')">
               <p>Please enter a valid name</p>
             </ng-container>
           </ng-template>
@@ -73,13 +73,13 @@
             (input)="removeLeadingWhitespace($event)"
           />
           <ng-template #emailValueTpl let-control>
-            <ng-container *ngIf="control?.hasError('required')">
+            <ng-container *ngIf="signupForm.get('email')?.hasError('required')">
               <p>Email is required</p>
             </ng-container>
-            <ng-container *ngIf="control?.hasError('whitespace')">
+            <ng-container *ngIf="signupForm.get('email')?.hasError('whitespace')">
               <p>Please enter a valid email</p>
             </ng-container>
-            <ng-container *ngIf="control?.hasError('email')">
+            <ng-container *ngIf="signupForm.get('email')?.hasError('email')">
               <p>Please enter a valid email</p>
             </ng-container>
           </ng-template>
@@ -106,7 +106,7 @@
               (blur)="onBlurPassword()"
             />
             <ng-template #passwordValueTpl let-control>
-              <ng-container *ngIf="control?.hasError('required')">
+              <ng-container *ngIf="signupForm.get('password')?.hasError('required')">
                 <p>Password is required</p>
               </ng-container>
             </ng-template>

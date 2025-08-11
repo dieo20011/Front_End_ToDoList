@@ -7,6 +7,7 @@ export interface IHoliday {
     createdAt: string;
     updatedAt: string;
     isAnnualHoliday: boolean;
+    isRecurring: boolean;
 }
 
 export interface IHolidayResponse {
@@ -20,6 +21,7 @@ export interface IHolidayRequest {
     fromDate: string;
     toDate: string;
     isAnnualHoliday: boolean;
+    isRecurring: boolean;
     description: string;
 }
 

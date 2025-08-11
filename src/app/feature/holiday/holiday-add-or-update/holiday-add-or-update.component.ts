@@ -52,7 +52,8 @@ export class HolidayAddOrUpdateComponent {
       fromDate: new FormControl('', [Validators.required]),
       toDate: new FormControl('', [Validators.required]),
       isAnnualHoliday: new FormControl(false),
-      description: new FormControl('', [Validators.required, whitespaceValidator]),
+      description: new FormControl('', [whitespaceValidator]),
+      isRecurring: new FormControl(false),
     },
     {
       validators: [DateValidatorV2.dateRange('fromDate', 'toDate')]
@@ -67,6 +68,7 @@ export class HolidayAddOrUpdateComponent {
   }
 
   formatDate(date: string): string {
+    if(!date) return '';
     return (
       this.datePipe.transform(date, "yyyy-MM-dd'T'00:00:00'Z'", 'UTC') ?? ''
     );

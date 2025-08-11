@@ -156,7 +156,9 @@
                                 'progress text-blue-600 bg-blue-200 ':
                                   event.status === ToDoStatus.InProgress,
                                 'done text-green-600 bg-green-200 ':
-                                  event.status === ToDoStatus.Done
+                                  event.status === ToDoStatus.Done,
+                                'recurring text-white bg-red-500 ':
+                                  event.status === ToDoStatus.RecurringTask
                               }"
                               class="rounded w-full p-1.5 py-2 text-[14px] font-semibold margin-b-0 ml-[8px] flex relative cursor-pointer"
                               (click)="event?.id ? openEditTask(event) : ''"
@@ -228,7 +230,9 @@
                               'progress text-blue-600 bg-blue-200 ':
                                 event.status === ToDoStatus.InProgress,
                               'done text-green-600 bg-green-200 ':
-                                event.status === ToDoStatus.Done
+                                event.status === ToDoStatus.Done,
+                              'recurring text-white bg-red-500 ':
+                                event.status === ToDoStatus.RecurringTask
                             }"
                             class="rounded w-full p-1.5 pr-2 text-[14px] font-semibold margin-b-0 ml-[8px] flex relative cursor-pointer"
                             (click)="event?.id ? openEditTask(event) : ''"
@@ -311,12 +315,11 @@
               <tr
                 class="cursor-pointer"
                 [ngClass]="{
-                  'text-green-700': calendar.status === ToDoStatus.Pending
+                  'text-green-700': calendar.status === ToDoStatus.Pending,
+                  'text-blue-500': calendar.status === ToDoStatus.InProgress,
+                  'text-red-500': calendar.status === ToDoStatus.Done,
+                  'text-white bg-red-500': calendar.status === ToDoStatus.RecurringTask
                 }"
-                [class.text-blue-500]="
-                  calendar.status === ToDoStatus.InProgress
-                "
-                [class.text-red-500]="calendar.status === ToDoStatus.Done"
                 (click)="openEditTask(calendar)"
               >
                 <td>{{ calendar.fromDate| date : "dd/MM/yyyy" }}</td>

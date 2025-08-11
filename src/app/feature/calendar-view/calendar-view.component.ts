@@ -20,8 +20,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { ReadMoreComponent } from "../../../shared/ui/read-more/read-more.component";
-import { HolidayService } from '../holiday/holiday.service';
 import { IHoliday } from '../holiday/holiday.interface';
+import { HolidayService } from '../holiday/holiday.service';
 @Component({
   selector: 'app-calendar-view',
   imports: [
@@ -224,9 +224,6 @@ export class CalendarViewComponent implements OnInit {
     this.generateCalendar(this.currentDate);
   }
 
-  editToDoTask(event: CalendarRespone) {
-    console.log(event);
-  }
 
   getEventsForDay(date: Date): any {
     const normalizedDate = new Date(date);
@@ -257,33 +254,77 @@ export class CalendarViewComponent implements OnInit {
       return this.sortEventsByPriority(events);
     }
 
-    // 2. Check for holiday
-    const holiday = this.holidayData.find(holiday => {
-      const holidayDate = new Date(holiday.fromDate);
-      holidayDate.setHours(0, 0, 0, 0);
+      // 2. Check for holiday
+  const holiday = this.holidayData.find(holiday => {
+    const holidayDate = new Date(holiday.fromDate);
+    holidayDate.setHours(0, 0, 0, 0);
 
-      const holidayDayOfMonth = holidayDate.getDate();
-      const holidayMonth = holidayDate.getMonth();
-      const holidayYear = holidayDate.getFullYear();
+    const holidayDayOfMonth = holidayDate.getDate();
+    const holidayMonth = holidayDate.getMonth();
+    const holidayYear = holidayDate.getFullYear();
 
-      if (holiday.isAnnualHoliday) {
-        return holidayDayOfMonth === dayOfMonth && holidayMonth === month;
-      } else {
-        return holidayDayOfMonth === dayOfMonth && holidayMonth === month && holidayYear === year;
+    // For recurring tasks, first check if original config was on weekend
+    if (holiday.isRecurring) {
+      const originalDayOfWeek = this.adjustWeekdayIndex(holidayDate.getDay());
+      
+      // Debug log to check what day it actually is
+      
+      // If original config was on weekend, skip this holiday entirely
+      if (originalDayOfWeek === 5 || originalDayOfWeek === 6) {
+        return false;
       }
-    });
+      
+      const isOriginalMatch = this.isHolidayMatch(holiday, dayOfMonth, month, year, holidayDayOfMonth, holidayMonth, holidayYear);
+      
+      // If original match is on weekend, don't show it, check for adjusted Monday instead
+      if (isOriginalMatch) {
+        const currentDayOfWeek = this.adjustWeekdayIndex(normalizedDate.getDay());
+        if (currentDayOfWeek === 5 || currentDayOfWeek === 6) {
+          // This is weekend occurrence, don't show here
+          return false;
+        }
+        return true;
+      }
+      
+      // Check if this date is an adjusted Monday from a weekend recurring task
+      const isAdjustedMonday = this.isAdjustedMondayForRecurring(normalizedDate, holiday);
+      
+      return isAdjustedMonday;
+    }
+
+    return this.isHolidayMatch(holiday, dayOfMonth, month, year, holidayDayOfMonth, holidayMonth, holidayYear);
+  });
 
     if (holiday) {
-      return [
-        {
-          title: holiday.name,
-          fromDate: normalizedDate.toISOString(),
-          toDate: normalizedDate.toISOString(),
-          avatar: '',
-          isHoliday: true,
-          isWeekend: false,
-        },
-      ];
+      // If this is a recurring task, treat it as a task, not a holiday
+      if (holiday.isRecurring) {
+        const adjustedDate = this.adjustWeekendToMonday(normalizedDate);
+        return [
+          {
+            id: holiday.id?.toString() || '',
+            title: holiday.name,
+            description: holiday.description || '',
+            fromDate: adjustedDate.toISOString(),
+            toDate: adjustedDate.toISOString(),
+            isHoliday: false,
+            isWeekend: false,
+            status: ToDoStatus.RecurringTask,
+            isUrgent: false,
+          },
+        ];
+      } else {
+        // Regular holiday
+        return [
+          {
+            title: holiday.name,
+            fromDate: normalizedDate.toISOString(),
+            toDate: normalizedDate.toISOString(),
+            avatar: '',
+            isHoliday: true,
+            isWeekend: false,
+          },
+        ];
+      }
     }
 
     // 3. Check for weekend
@@ -315,7 +356,6 @@ export class CalendarViewComponent implements OnInit {
   }
 
   changeViewDataType(event: any) {
-    console.log(event);
     this.viewDataType = event;
     localStorage.setItem('viewDataTypeSelfLeave', this.viewDataType.toString());
     if (this.viewDataType === 0) {
@@ -412,12 +452,13 @@ export class CalendarViewComponent implements OnInit {
       if (a.isUrgent && !b.isUrgent) return -1;
       if (!a.isUrgent && b.isUrgent) return 1;
       
-      // Second priority: status (Pending > InProgress > Done)
+      // Second priority: status (Pending > InProgress > Done > RecurringTask)
       if (a.status !== b.status) {
         const statusPriority = { 
           [ToDoStatus.Pending]: 0, 
           [ToDoStatus.InProgress]: 1, 
-          [ToDoStatus.Done]: 2 
+          [ToDoStatus.Done]: 2,
+          [ToDoStatus.RecurringTask]: 3
         };
         return statusPriority[a.status] - statusPriority[b.status];
       }
@@ -425,5 +466,113 @@ export class CalendarViewComponent implements OnInit {
       // Third priority: title alphabetically
       return a.title.localeCompare(b.title);
     });
+  }
+
+  /**
+   * Adjust weekend dates to Monday for recurring tasks
+   */
+  private adjustWeekendToMonday(date: Date): Date {
+    const adjustedDate = new Date(date);
+    const dayOfWeek = this.adjustWeekdayIndex(adjustedDate.getDay());
+    
+    // If it's Saturday (5) or Sunday (6), move to next Monday
+    if (dayOfWeek === 5) { // Saturday
+      adjustedDate.setDate(adjustedDate.getDate() + 2);
+    } else if (dayOfWeek === 6) { // Sunday
+      adjustedDate.setDate(adjustedDate.getDate() + 1);
+    }
+    
+    return adjustedDate;
+  }
+
+  /**
+   * Check if current date is an adjusted Monday from a weekend recurring task
+   */
+  private isAdjustedMondayForRecurring(currentDate: Date, holiday: IHoliday): boolean {
+    const holidayDate = new Date(holiday.fromDate);
+    holidayDate.setHours(0, 0, 0, 0);
+
+    const holidayDayOfMonth = holidayDate.getDate();
+    const holidayMonth = holidayDate.getMonth();
+    const holidayYear = holidayDate.getFullYear();
+
+    const currentDayOfMonth = currentDate.getDate();
+    const currentMonth = currentDate.getMonth();
+    const currentYear = currentDate.getFullYear();
+    const currentDayOfWeek = this.adjustWeekdayIndex(currentDate.getDay());
+
+    // Only check if current date is a Monday
+    if (currentDayOfWeek !== 0) {
+      return false;
+    }
+
+    // Check if current Monday is 1-2 days after a weekend recurring task
+    const saturdayBefore = new Date(currentDate);
+    saturdayBefore.setDate(currentDate.getDate() - 2);
+    
+    const sundayBefore = new Date(currentDate);
+    sundayBefore.setDate(currentDate.getDate() - 1);
+
+    // Check if Saturday or Sunday before would have been a recurring task match
+    const isSaturdayMatch = this.isRecurringTaskMatch(saturdayBefore, holiday, holidayDayOfMonth, holidayMonth, holidayYear);
+    const isSundayMatch = this.isRecurringTaskMatch(sundayBefore, holiday, holidayDayOfMonth, holidayMonth, holidayYear);
+
+    return isSaturdayMatch || isSundayMatch;
+  }
+
+  /**
+   * Check if a date matches the recurring pattern (without weekend adjustment)
+   */
+  private isRecurringTaskMatch(
+    date: Date, 
+    holiday: IHoliday, 
+    holidayDayOfMonth: number, 
+    holidayMonth: number, 
+    holidayYear: number
+  ): boolean {
+    const dayOfMonth = date.getDate();
+    const month = date.getMonth();
+    const year = date.getFullYear();
+
+    return this.isHolidayMatch(holiday, dayOfMonth, month, year, holidayDayOfMonth, holidayMonth, holidayYear);
+  }
+
+  /**
+   * Check if a holiday matches the given date based on recurring patterns
+   */
+  private isHolidayMatch(
+    holiday: IHoliday, 
+    dayOfMonth: number, 
+    month: number, 
+    year: number,
+    holidayDayOfMonth: number, 
+    holidayMonth: number, 
+    holidayYear: number
+  ): boolean {
+    if (!holiday.isRecurring) {
+      // Non-recurring event: exact date match
+      return holidayDayOfMonth === dayOfMonth && 
+             holidayMonth === month && 
+             holidayYear === year;
+    }
+
+    // For recurring events, we need to check the pattern
+    const currentDate = new Date(year, month, dayOfMonth);
+    const holidayStartDate = new Date(holidayYear, holidayMonth, holidayDayOfMonth);
+    
+    // Event should start from the original date onwards
+    if (currentDate < holidayStartDate) {
+      return false;
+    }
+
+    if (holiday.isAnnualHoliday) {
+      // Both annual and monthly recurring when isAnnualHoliday is true
+      const isAnnualMatch = holidayDayOfMonth === dayOfMonth && holidayMonth === month;
+      const isMonthlyMatch = holidayDayOfMonth === dayOfMonth;
+      return isAnnualMatch || isMonthlyMatch;
+    } else {
+      // Monthly recurring only: same day every month from start date onwards
+      return holidayDayOfMonth === dayOfMonth;
+    }
   }
 }
