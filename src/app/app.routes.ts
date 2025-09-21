@@ -7,6 +7,8 @@ import { GuestGuard } from '../core/guard/guest.guard';
 import { HolidayComponent } from './feature/holiday/holiday.component';
 import { CalendarViewComponent } from './feature/calendar-view/calendar-view.component';
 import { NewsComponent } from './feature/news/news.component';
+import { PromodoManagementComponent } from './feature/promodo-management/promodo-management.component';
+import { LoveTimelineComponent } from './feature/love-timeline/love-timeline.component';
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   {
@@ -30,6 +32,14 @@ export const routes: Routes = [
       {
         path: 'news',
         component: NewsComponent
+      },
+      {
+        path: 'pomodoro',
+        component: PromodoManagementComponent
+      },
+      {
+        path: 'baby-boo',
+        component: LoveTimelineComponent
       },
     ]
   },

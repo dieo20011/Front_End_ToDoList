@@ -1,0 +1,386 @@
+.love-timeline-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+// Header Section
+.header-section {
+  text-align: center;
+  margin-bottom: 3rem;
+  z-index: 2;
+}
+
+// Couple Photos Section
+.couple-photos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.photo-container {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(214, 51, 132, 0.3);
+  border: 4px solid rgba(255, 255, 255, 0.8);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: scale(1.1);
+    box-shadow: 0 12px 40px rgba(214, 51, 132, 0.4);
+  }
+}
+
+.couple-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.photo-placeholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #ffc1cc 0%, #ffb3d1 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #d63384;
+  border: 3px dashed #d63384;
+
+  .placeholder-icon {
+    font-size: 3rem;
+    animation: bounce 2s ease-in-out infinite;
+  }
+}
+
+.heart-connector {
+  font-size: 2.5rem;
+  animation: pulse 2s ease-in-out infinite;
+  filter: drop-shadow(0 4px 8px rgba(214, 51, 132, 0.3));
+}
+
+.main-title {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #d63384;
+  margin: 0 0 1rem 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  animation: pulse 2s ease-in-out infinite;
+
+  .heart-icon {
+    display: inline-block;
+    animation: bounce 1.5s ease-in-out infinite;
+    margin: 0 0.5rem;
+  }
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  color: #6c757d;
+  margin: 0;
+  font-weight: 500;
+}
+
+// Countdown Section
+.countdown-section {
+  margin-bottom: 3rem;
+  z-index: 2;
+}
+
+.time-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.time-unit {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 20px;
+  padding: 1.5rem 1rem;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(214, 51, 132, 0.3);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  min-width: 120px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(214, 51, 132, 0.4);
+  }
+}
+
+.time-value {
+  font-size: 3rem;
+  font-weight: 800;
+  color: #d63384;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.time-label {
+  font-size: 1rem;
+  color: #6c757d;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.separator {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #d63384;
+  animation: blink 1s ease-in-out infinite;
+}
+
+// Image Section
+.image-section {
+  margin-bottom: 2rem;
+  z-index: 2;
+}
+
+.image-container {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 15px 50px rgba(214, 51, 132, 0.3);
+  max-width: 400px;
+  width: 100%;
+}
+
+.love-image {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+}
+
+.image-placeholder {
+  width: 100%;
+  height: 300px;
+  background: linear-gradient(135deg, #ffc1cc 0%, #ffb3d1 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #d63384;
+  border: 3px dashed #d63384;
+  border-radius: 20px;
+
+  .placeholder-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    animation: bounce 2s ease-in-out infinite;
+  }
+
+  p {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0;
+    text-align: center;
+  }
+}
+
+// Floating Hearts Animation
+.floating-hearts {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.heart {
+  position: absolute;
+  font-size: 2rem;
+  animation: float 6s ease-in-out infinite;
+  opacity: 0.7;
+
+  &.heart-1 {
+    top: 10%;
+    left: 10%;
+    animation-delay: 0s;
+  }
+
+  &.heart-2 {
+    top: 20%;
+    right: 15%;
+    animation-delay: 1s;
+  }
+
+  &.heart-3 {
+    top: 60%;
+    left: 5%;
+    animation-delay: 2s;
+  }
+
+  &.heart-4 {
+    top: 70%;
+    right: 10%;
+    animation-delay: 3s;
+  }
+
+  &.heart-5 {
+    top: 40%;
+    left: 50%;
+    animation-delay: 4s;
+  }
+}
+
+// Animations
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes blink {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0.3;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-20px) rotate(5deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(-5deg);
+  }
+  75% {
+    transform: translateY(-15px) rotate(3deg);
+  }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .love-timeline-container {
+    padding: 1rem;
+  }
+
+  .couple-photos {
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .photo-container {
+    width: 100px;
+    height: 100px;
+  }
+
+  .heart-connector {
+    font-size: 2rem;
+  }
+
+  .main-title {
+    font-size: 2rem;
+  }
+
+  .time-display {
+    gap: 1rem;
+  }
+
+  .time-unit {
+    min-width: 80px;
+    padding: 1rem 0.5rem;
+  }
+
+  .time-value {
+    font-size: 2rem;
+  }
+
+  .time-label {
+    font-size: 0.8rem;
+  }
+
+  .separator {
+    font-size: 1.5rem;
+  }
+
+  .image-container {
+    max-width: 300px;
+  }
+
+  .love-image,
+  .image-placeholder {
+    height: 250px;
+  }
+}
+
+@media (max-width: 480px) {
+  .couple-photos {
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .photo-container {
+    width: 80px;
+    height: 80px;
+  }
+
+  .heart-connector {
+    font-size: 1.5rem;
+  }
+
+  .main-title {
+    font-size: 1.5rem;
+  }
+
+  .time-display {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .time-unit {
+    min-width: 200px;
+  }
+
+  .separator {
+    display: none;
+  }
+}

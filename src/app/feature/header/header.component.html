@@ -18,6 +18,12 @@
             <nz-tab>
                 <a *nzTabLink nz-tab-link routerLink="/dashboard/holiday">Holiday management</a>
             </nz-tab>
+            <nz-tab>
+                <a *nzTabLink nz-tab-link routerLink="/dashboard/pomodoro">🍅 Pomodoro Timer</a>
+            </nz-tab>
+            <nz-tab *ngIf="isAdmin()">
+                <a *nzTabLink nz-tab-link routerLink="/dashboard/baby-boo">Love Timeline</a>
+            </nz-tab>
         </nz-tabset>
       </div>
       

@@ -1,0 +1,88 @@
+<div class="love-timeline-container">
+  <!-- Header Section -->
+  <div class="header-section">
+    <!-- Couple Photos -->
+    <div class="couple-photos">
+      <div class="photo-container">
+        <img 
+          src="assets/img/luan.jpg" 
+          alt="Partner 1" 
+          class="couple-photo"
+          onError="this.style.display='none'"
+        />
+        <div class="photo-placeholder" *ngIf="!loveTime.days">
+          <span class="placeholder-icon">👤</span>
+        </div>
+      </div>
+      <div class="heart-connector">💕</div>
+      <div class="photo-container">
+        <img 
+          src="assets/img/avatar.jpg" 
+          alt="Partner 2" 
+          class="couple-photo"
+          onError="this.style.display='none'"
+        />
+        <div class="photo-placeholder" *ngIf="!loveTime.days">
+          <span class="placeholder-icon">👤</span>
+        </div>
+      </div>
+    </div>
+    
+    <h1 class="main-title">
+      <span class="heart-icon">💕</span>
+      We've Been In Love For
+      <span class="heart-icon">💕</span>
+    </h1>
+    <p class="subtitle">Since May 1st, 2024</p>
+  </div>
+
+  <!-- Countdown Clock Section -->
+  <div class="countdown-section">
+    <div class="time-display">
+      <div class="time-unit">
+        <div class="time-value">{{ loveTime.days }}</div>
+        <div class="time-label">Days</div>
+      </div>
+      <div class="separator">:</div>
+      <div class="time-unit">
+        <div class="time-value">{{ loveTime.hours | number:'2.0-0' }}</div>
+        <div class="time-label">Hours</div>
+      </div>
+      <div class="separator">:</div>
+      <div class="time-unit">
+        <div class="time-value">{{ loveTime.minutes | number:'2.0-0' }}</div>
+        <div class="time-label">Minutes</div>
+      </div>
+      <div class="separator">:</div>
+      <div class="time-unit">
+        <div class="time-value">{{ loveTime.seconds | number:'2.0-0' }}</div>
+        <div class="time-label">Seconds</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Image Section -->
+  <div class="image-section">
+    <div class="image-container">
+      <img 
+        src="assets/love-image.jpg" 
+        alt="Love Memory" 
+        class="love-image"
+        onError="this.style.display='none'"
+      />
+      <div class="image-placeholder" *ngIf="!loveTime.days">
+        <span class="placeholder-icon">📸</span>
+        <p>Add our love memory photo</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Decorative Elements -->
+  <div class="floating-hearts">
+    <span class="heart heart-1">💖</span>
+    <span class="heart heart-2">💕</span>
+    <span class="heart heart-3">💗</span>
+    <span class="heart heart-4">💝</span>
+    <span class="heart heart-5">💘</span>
+  </div>
+</div>
