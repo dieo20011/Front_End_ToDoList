@@ -31,5 +31,4 @@ export const ToDoList = [
   { value: ToDoStatus.Pending, label: 'Pending' },
   { value: ToDoStatus.InProgress, label: 'In Progress' },
   { value: ToDoStatus.Done, label: 'Done' },
-  { value: ToDoStatus.RecurringTask, label: 'Recurring Task' },
 ];
