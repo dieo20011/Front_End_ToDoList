@@ -1,0 +1,69 @@
+<div class="pomodoro-container mt-[10px]">
+  <!-- Header -->
+  <div class="pomodoro-header">
+    <h1 class="pomodoro-title">🍅 Pomodoro Timer</h1>
+    <div class="session-info">
+      <span class="session-name">{{ getSessionName() }}</span>
+      <span class="session-count mt-[7px]">Session {{ sessionCount() }}</span>
+    </div>
+  </div>
+
+  <!-- Timer Circle -->
+  <div class="timer-container">
+    <div class="timer-circle" [class.running]="isRunning()" [class.paused]="isPaused()">
+      <svg class="progress-ring" width="300" height="300">
+        <circle class="progress-ring-circle" stroke="#e5e7eb" stroke-width="8" fill="transparent" r="140" cx="150"
+          cy="150" />
+        <circle class="progress-ring-circle progress-ring-fill" [style.stroke-dasharray]="2 * Math.PI * 140"
+          [style.stroke-dashoffset]="2 * Math.PI * 140 * (1 - getProgress() / 100)" stroke="#10b981" stroke-width="8"
+          fill="transparent" r="140" cx="150" cy="150" />
+      </svg>
+      <div class="timer-display">
+        <div class="time-text">{{ formatTime(timeLeft()) }}</div>
+        <div class="session-indicator">{{ getSessionName() }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Control Buttons -->
+  <div class="grid grid-cols-3 gap-3">
+    <button *ngIf="!isRunning() && !isPaused()" (click)="startTimer()" class="btn btn-primary btn-large">
+      <span class="btn-icon">▶️</span>
+      Start
+    </button>
+
+    <button *ngIf="isRunning()" (click)="pauseTimer()" class="btn btn-secondary btn-large">
+      <span class="btn-icon">⏸️</span>
+      Pause
+    </button>
+
+    <button *ngIf="isPaused()" (click)="resumeTimer()" class="btn btn-primary btn-large">
+      <span class="btn-icon">▶️</span>
+      Resume
+    </button>
+
+    <button (click)="resetTimer()" class="btn btn-outline btn-large" [disabled]="!isRunning() && !isPaused()">
+      <span class="btn-icon">🔄</span>
+      Reset
+    </button>
+    <button (click)="isMusicPlaying() ? stopBackgroundMusic() : playBackgroundMusic()" class="btn btn-music"
+      [class.active]="isMusicPlaying()">
+      <span class="btn-icon">{{ isMusicPlaying() ? '🔊' : '🔇' }}</span>
+      {{ isMusicPlaying() ? 'Stop Music' : 'Play Music' }}
+    </button>
+  </div>
+
+  <!-- Settings Panel -->
+  <div class="settings-panel">
+    <h3 class="settings-title">⚙️ Settings</h3>
+    <div class="settings-grid">
+      <div class="setting-item">
+        <label>Work Time (minutes)</label>
+        <input type="number" [(ngModel)]="settings().workTime"
+          (change)="updateSettings({workTime: settings().workTime})" min="1" max="60" class="setting-input"
+          title="Work time in minutes" placeholder="25" />
+      </div>
+    </div>
+  </div>
+
+</div>

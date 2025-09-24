@@ -83,6 +83,8 @@ export class HeaderComponent implements OnInit {
           this.selectedIndex.set(0);
         } else if (this.router.url.includes('/dashboard/holiday')) {
           this.selectedIndex.set(1);
+        } else if (this.router.url.includes('/dashboard/pomodoro')) {
+          this.selectedIndex.set(2);
         }
       }
     });       
